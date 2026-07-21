@@ -231,42 +231,54 @@ function write(path, content) {
   console.log("wrote", path);
 }
 
-// SVG placeholder art: gradient + soft grid + big label. Self-contained.
+// Cinematic still placeholder: muted duotone, heavy vignette, film grain,
+// grid, crosshair marks, timecode + label. Self-contained SVG.
 function svg(project, label, variant) {
   const { c1, c2, title } = project;
-  const w = 1280;
-  const h = 800;
-  const rot = variant * 47;
-  const gid = `g${project.id}${variant}`.replace(/[^a-z0-9]/gi, "");
-  const dots = [];
-  for (let i = 0; i < 5; i++) {
-    const cx = 180 + ((variant * 260 + i * 230) % 1000);
-    const cy = 120 + ((variant * 140 + i * 170) % 620);
-    const r = 40 + ((i * variant + 3) % 5) * 26;
-    dots.push(
-      `<circle cx="${cx}" cy="${cy}" r="${r}" fill="#fff" opacity="${
-        0.04 + (i % 3) * 0.02
-      }"/>`
+  const w = 1600;
+  const h = 900;
+  const rot = 20 + variant * 34;
+  const uid = `${project.id}${variant}`.replace(/[^a-z0-9]/gi, "");
+  const tc = `00:0${(variant % 6) + 1}:${String(12 + variant * 7).padStart(2, "0")}:${String((variant * 13) % 24).padStart(2, "0")}`;
+  const beams = [];
+  for (let i = 0; i < 3; i++) {
+    const x = 200 + ((variant * 300 + i * 520) % 1200);
+    beams.push(
+      `<ellipse cx="${x}" cy="${300 + i * 120}" rx="${420 - i * 60}" ry="${200}" fill="url(#glow${uid})" opacity="${0.5 - i * 0.12}"/>`
     );
   }
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" fill="none">
   <defs>
-    <linearGradient id="${gid}" x1="0" y1="0" x2="1" y2="1" gradientTransform="rotate(${rot} .5 .5)">
+    <linearGradient id="duo${uid}" x1="0" y1="0" x2="1" y2="1" gradientTransform="rotate(${rot} .5 .5)">
       <stop offset="0" stop-color="${c1}"/>
       <stop offset="1" stop-color="${c2}"/>
     </linearGradient>
-    <pattern id="${gid}grid" width="48" height="48" patternUnits="userSpaceOnUse">
-      <path d="M48 0H0V48" stroke="#ffffff" stroke-opacity="0.06" stroke-width="1"/>
+    <radialGradient id="glow${uid}" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="${c1}" stop-opacity="0.9"/>
+      <stop offset="1" stop-color="${c1}" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="vig${uid}" cx="50%" cy="46%" r="72%">
+      <stop offset="0" stop-color="#000" stop-opacity="0"/>
+      <stop offset="0.7" stop-color="#000" stop-opacity="0.35"/>
+      <stop offset="1" stop-color="#000" stop-opacity="0.9"/>
+    </radialGradient>
+    <pattern id="grid${uid}" width="64" height="64" patternUnits="userSpaceOnUse">
+      <path d="M64 0H0V64" stroke="#ffffff" stroke-opacity="0.05" stroke-width="1"/>
     </pattern>
   </defs>
-  <rect width="${w}" height="${h}" fill="#0a0a0c"/>
-  <rect width="${w}" height="${h}" fill="url(#${gid})" opacity="0.9"/>
-  <g style="mix-blend-mode:soft-light">${dots.join("")}</g>
-  <rect width="${w}" height="${h}" fill="url(#${gid}grid)"/>
-  <rect x="0" y="0" width="${w}" height="${h}" fill="#000" opacity="0.22"/>
-  <text x="72" y="${h - 150}" font-family="Inter, Arial, sans-serif" font-size="34" font-weight="600" fill="#ffffff" opacity="0.72">${title}</text>
-  <text x="72" y="${h - 70}" font-family="Inter, Arial, sans-serif" font-size="96" font-weight="800" letter-spacing="-3" fill="#ffffff">${label}</text>
-  <circle cx="${w - 96}" cy="96" r="14" fill="#ffffff" opacity="0.9"/>
+  <rect width="${w}" height="${h}" fill="#0c0c0e"/>
+  <rect width="${w}" height="${h}" fill="url(#duo${uid})" opacity="0.42"/>
+  <g style="mix-blend-mode:screen">${beams.join("")}</g>
+  <rect width="${w}" height="${h}" fill="url(#grid${uid})"/>
+  <rect width="${w}" height="${h}" fill="url(#vig${uid})"/>
+  <g stroke="#e7e7e2" stroke-opacity="0.5" stroke-width="1.4">
+    <path d="M60 46 v28 M46 60 h28"/>
+    <path d="M${w - 60} 46 v28 M${w - 74} 60 h28"/>
+  </g>
+  <text x="60" y="${h - 118}" font-family="'Roboto Mono', monospace" font-size="22" letter-spacing="4" fill="#e7e7e2" opacity="0.7">${title.toUpperCase()}</text>
+  <text x="58" y="${h - 52}" font-family="Archivo, Arial, sans-serif" font-size="104" font-weight="800" letter-spacing="-4" fill="#f2f2ee" text-transform="uppercase">${label.toUpperCase()}</text>
+  <text x="${w - 60}" y="${h - 52}" text-anchor="end" font-family="'Roboto Mono', monospace" font-size="22" letter-spacing="3" fill="#c9a24e">${tc}</text>
+  <text x="${w - 60}" y="82" text-anchor="end" font-family="'Roboto Mono', monospace" font-size="18" letter-spacing="3" fill="#e7e7e2" opacity="0.6">REC ●</text>
 </svg>`;
 }
 
@@ -285,24 +297,28 @@ function head(title, desc) {
   <meta property="og:type" content="website"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23ff6a00'/%3E%3Ctext x='16' y='23' font-family='Arial' font-size='19' font-weight='bold' text-anchor='middle' fill='%23000'%3ER%3C/text%3E%3C/svg%3E"/>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;600;700;800;900&family=Roboto+Mono:wght@400;500;700&display=swap" rel="stylesheet"/>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23141416'/%3E%3Cg stroke='%23c9a24e' stroke-width='2'%3E%3Cpath d='M16 7v18M7 16h18'/%3E%3C/g%3E%3C/svg%3E"/>
   <link rel="stylesheet" href="{{root}}styles.css"/>
 </head>
 <body>`;
 }
 
 function nav(root) {
-  return `  <header class="nav">
+  return `  <span class="crosshair tl"></span>
+  <span class="crosshair tr"></span>
+  <span class="crosshair bl"></span>
+  <span class="crosshair br"></span>
+  <header class="nav">
     <div class="container">
       <a class="brand" href="${root || "./"}index.html">
-        <span class="mark">R</span> Rastko Blagojevic
+        <span class="plus">+</span> Rastko&nbsp;Blagojevic
       </a>
       <nav class="nav-links">
         <a href="${root}index.html#work">Work</a>
         <a href="${root}index.html#about">About</a>
+        <a href="${root}index.html#feed">Feed</a>
         <a href="${root}index.html#contact">Contact</a>
-        <a class="btn btn-primary" href="mailto:${SITE.email}">Let's talk</a>
       </nav>
       <button class="nav-toggle" aria-label="Menu">&#9776;</button>
     </div>
@@ -310,32 +326,16 @@ function nav(root) {
 }
 
 function footer(root) {
-  return `  <footer class="footer" id="contact">
+  return `  <footer class="footer">
     <div class="container">
-      <div class="footer-top">
-        <div class="footer-brand">
-          <a class="brand" href="${root}index.html"><span class="mark">R</span> Rastko Blagojevic</a>
-          <p>${SITE.role}. Designing and building calm, high-craft product experiences.</p>
-        </div>
-        <div class="footer-cols">
-          <div class="footer-col">
-            <h5>Explore</h5>
-            <a href="${root}index.html#work">Work</a>
-            <a href="${root}index.html#about">About</a>
-            <a href="${root}index.html#contact">Contact</a>
-          </div>
-          <div class="footer-col">
-            <h5>Connect</h5>
-            <a href="mailto:${SITE.email}">Email</a>
-            <a href="${SITE.github}" target="_blank" rel="noopener">GitHub</a>
-            <a href="#">LinkedIn</a>
-          </div>
-        </div>
+      <span>© <span data-year>2025</span> ${SITE.name}</span>
+      <div class="col">
+        <a href="mailto:${SITE.email}">Email</a>
+        <a href="${SITE.github}" target="_blank" rel="noopener">GitHub</a>
+        <a href="#">LinkedIn</a>
+        <a href="${root}index.html#work">Work</a>
       </div>
-      <div class="footer-bottom">
-        <span>© <span data-year>2025</span> ${SITE.name}. All rights reserved.</span>
-        <span>Built with care · Deployed on Vercel</span>
-      </div>
+      <span>Design &amp; Engineering · ${SITE.role.split(" & ")[0]}</span>
     </div>
   </footer>
   <script src="${root}script.js"></script>
@@ -345,104 +345,91 @@ function footer(root) {
 
 // ------------------------------ Home page --------------------------------
 
-function homeCard(p) {
-  return `        <a class="card reveal" href="projects/${p.id}.html">
-          <div class="card-media">
-            <img src="assets/${p.id}-cover.svg" alt="${p.title} preview" loading="lazy"/>
-            <span class="card-tag">${p.category.split(" · ")[0]}</span>
-          </div>
-          <div class="card-body">
-            <h3>${p.title}</h3>
-            <p>${p.tagline}</p>
-            <div class="card-foot">
-              <span class="card-year">${p.category.split(" · ")[1] || ""} · ${p.year}</span>
-              <span class="card-link">View project <span class="arrow">→</span></span>
-            </div>
-          </div>
+function projectRow(p, idx) {
+  const num = String(idx + 1).padStart(2, "0");
+  const discipline = p.category.split(" · ")[1] || p.category;
+  return `        <a class="proj-row" href="projects/${p.id}.html" data-img="assets/${p.id}-cover.svg">
+          <span class="proj-num">${num}</span>
+          <span class="proj-title">${p.title}</span>
+          <span class="proj-client">${p.client}<br/>${discipline}</span>
+          <span class="proj-year">${p.year}</span>
+          <span class="proj-thumb"><img src="assets/${p.id}-cover.svg" alt="${p.title}" loading="lazy"/></span>
         </a>`;
 }
 
 function homePage() {
-  const cards = projects.map(homeCard).join("\n");
+  const rows = projects.map(projectRow).join("\n");
   return `${head(
     `${SITE.name} — ${SITE.role}`,
     `Portfolio of ${SITE.name}, ${SITE.role}. Selected work across fintech, commerce, data and developer tools.`
   ).replace(/{{root}}/g, "./")}
 ${nav("./")}
+  <div class="hover-preview"><img src="assets/${projects[0].id}-cover.svg" alt=""/></div>
   <main>
     <section class="hero">
+      <div class="hero-grid"></div>
+      <div class="hero-glow"></div>
       <div class="container">
-        <span class="hero-badge"><span class="dot"></span> Available for select projects — 2026</span>
-        <h1>Design that feels <span class="accent">effortless.</span> Engineering that holds up.</h1>
-        <p class="hero-lead">I'm ${SITE.name}, a ${SITE.role.toLowerCase()} crafting fast, considered products — from first sketch to shipped code.</p>
-        <div class="hero-actions">
-          <a class="btn btn-primary" href="#work">View selected work →</a>
-          <a class="btn btn-ghost" href="mailto:${SITE.email}">Get in touch</a>
+        <div class="hero-top">
+          <span class="label">Portfolio — Est. 2018</span>
+          <span class="label">${SITE.role}</span>
+          <span class="label">Belgrade / Remote</span>
         </div>
-        <div class="hero-stats">
-          <div class="stat reveal"><div class="num">8<span class="accent">+</span></div><div class="label">Years of craft</div></div>
-          <div class="stat reveal"><div class="num">40<span class="accent">+</span></div><div class="label">Products shipped</div></div>
-          <div class="stat reveal"><div class="num">12</div><div class="label">Teams enabled</div></div>
-          <div class="stat reveal"><div class="num">4</div><div class="label">Design awards</div></div>
+        <h1>Design<br/><span class="thin">that feels</span> <em>effortless</em><br/>Built to <em>last.</em></h1>
+        <div class="hero-lead">
+          <p>I'm ${SITE.name} — a ${SITE.role.toLowerCase()} crafting fast, cinematic, high-craft products from first frame to shipped code.</p>
+          <span class="arrow">↓</span>
         </div>
       </div>
     </section>
 
     <div class="marquee">
       <div class="marquee-track">
-        <span>Fintech</span><span>·</span><span>Commerce</span><span>·</span><span>Data</span><span>·</span><span>Developer Tools</span><span>·</span><span>Design Systems</span><span>·</span><span>Mobile</span><span>·</span>
-        <span>Fintech</span><span>·</span><span>Commerce</span><span>·</span><span>Data</span><span>·</span><span>Developer Tools</span><span>·</span><span>Design Systems</span><span>·</span><span>Mobile</span><span>·</span>
+        <span>Product Design</span><span class="dot">+</span><span>Design Systems</span><span class="dot">+</span><span>Frontend Engineering</span><span class="dot">+</span><span>Prototyping</span><span class="dot">+</span><span>Brand</span><span class="dot">+</span><span>Motion</span><span class="dot">+</span>
+        <span>Product Design</span><span class="dot">+</span><span>Design Systems</span><span class="dot">+</span><span>Frontend Engineering</span><span class="dot">+</span><span>Prototyping</span><span class="dot">+</span><span>Brand</span><span class="dot">+</span><span>Motion</span><span class="dot">+</span>
       </div>
     </div>
 
     <section class="section" id="work">
       <div class="container">
-        <div class="section-head reveal">
-          <div>
-            <span class="eyebrow">Selected work</span>
-            <h2>Products, systems &amp; the details<br/>in between.</h2>
-          </div>
-          <p>A selection of recent work. Each project pairs a clear product story with the craft behind it.</p>
+        <div class="section-head">
+          <h2>Selected Work</h2>
+          <span class="idx">[ ${String(projects.length).padStart(2, "0")} PROJECTS / 2023—2025 ]</span>
         </div>
-        <div class="work-grid">
-${cards}
+        <div class="projects">
+${rows}
         </div>
       </div>
     </section>
 
     <section class="section" id="about">
       <div class="container">
-        <div class="section-head reveal">
-          <div>
-            <span class="eyebrow">About</span>
-            <h2>I bridge design and code<br/>so nothing gets lost.</h2>
-          </div>
+        <div class="section-head">
+          <h2>About</h2>
+          <span class="idx">[ 001 / STUDIO ]</span>
         </div>
-        <div class="proj-layout">
-          <div class="prose reveal">
-            <p>For the last eight years I've worked at the seam between design and engineering — the place where good ideas usually break down. I care about the whole path: the research that frames a problem, the interface that solves it, and the code that ships it without compromise.</p>
-            <p>My work spans fintech, commerce, data and developer tooling, but the through-line is constant: reduce noise, respect attention, and sweat the details that make software feel trustworthy. I design in Figma, build in React, and I'm happiest owning a feature end to end.</p>
-          </div>
-          <div class="side-card reveal">
-            <h4>Capabilities</h4>
-            <div class="side-list">
-              <div class="row"><span>Product design</span><span>Expert</span></div>
-              <div class="row"><span>Design systems</span><span>Expert</span></div>
-              <div class="row"><span>Frontend (React)</span><span>Advanced</span></div>
-              <div class="row"><span>Prototyping</span><span>Advanced</span></div>
-              <div class="row"><span>User research</span><span>Proficient</span></div>
+        <div class="about-grid">
+          <p class="lead reveal">For eight years I've worked at the seam between <em>design</em> and <em>engineering</em> — the place where good ideas usually break down — and made it the place they come together.</p>
+          <div class="about-body reveal">
+            <p>My work spans fintech, commerce, data and developer tooling, but the through-line is constant: reduce noise, respect attention, and sweat the details that make software feel trustworthy and alive.</p>
+            <p>I design in Figma, build in React, and I'm happiest owning a feature end to end — from the first rough frame to the last shipped pixel.</p>
+            <div class="capabilities">
+              <div class="cap-row"><span>Product Design</span><span>Expert</span></div>
+              <div class="cap-row"><span>Design Systems</span><span>Expert</span></div>
+              <div class="cap-row"><span>Frontend / React</span><span>Advanced</span></div>
+              <div class="cap-row"><span>Prototyping &amp; Motion</span><span>Advanced</span></div>
+              <div class="cap-row"><span>User Research</span><span>Proficient</span></div>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="cta">
+    <section class="cta" id="contact">
       <div class="container">
-        <span class="eyebrow" style="justify-content:center">Let's build</span>
-        <h2>Have a product worth doing right?</h2>
-        <p>I take on a small number of projects at a time so each gets real focus. If that sounds like what you need, let's talk.</p>
-        <a class="btn btn-primary" href="mailto:${SITE.email}">Start a conversation →</a>
+        <span class="label">Let's build something</span>
+        <h2>Have a project<br/>worth doing right?<br/><a href="mailto:${SITE.email}">Get in touch ↗</a></h2>
+        <p>I take on a small number of projects at a time so each gets real focus.</p>
       </div>
     </section>
   </main>
@@ -454,79 +441,69 @@ ${footer("./")}`;
 function projectPage(p, idx) {
   const next = projects[(idx + 1) % projects.length];
   const metaHtml = `
-        <div class="meta-item"><div class="k">Role</div><div class="v">${p.role}</div></div>
-        <div class="meta-item"><div class="k">Timeline</div><div class="v">${p.timeline}</div></div>
-        <div class="meta-item"><div class="k">Client</div><div class="v">${p.client}</div></div>
-        <div class="meta-item"><div class="k">Year</div><div class="v">${p.year}</div></div>`;
-  const features = p.features
-    .map((f) => `            <li>${f}</li>`)
-    .join("\n");
-  const stack = p.stack
-    .map((s) => `<span class="pill">${s}</span>`)
-    .join("\n              ");
-  const metrics = p.metrics
+          <div class="meta-item"><div class="k">Client</div><div class="v">${p.client}</div></div>
+          <div class="meta-item"><div class="k">Role</div><div class="v">${p.role}</div></div>
+          <div class="meta-item"><div class="k">Timeline</div><div class="v">${p.timeline}</div></div>
+          <div class="meta-item"><div class="k">Year</div><div class="v">${p.year}</div></div>`;
+  const features = p.features.map((f) => `              <li>${f}</li>`).join("\n");
+  const stat = p.metrics
     .map(
       (m) =>
-        `              <div class="row"><span>${m[0]}</span><span>${m[1]}</span></div>`
+        `          <div class="stat"><div class="n">${m[1]}</div><div class="l">${m[0]}</div></div>`
     )
     .join("\n");
+  const stackLine = p.stack.join("  ·  ");
   const gallery = p.gallery
     .map(
       (g, i) =>
-        `          <figure${i === 2 ? ' class="wide"' : ""}>
+        `          <figure class="reveal">
             <img src="../assets/${p.id}-${i + 1}.svg" alt="${p.title} — ${g.label}" loading="lazy"/>
-            <figcaption>${g.cap}</figcaption>
+            <figcaption><span class="idx">0${i + 1}</span>${g.cap}</figcaption>
           </figure>`
     )
     .join("\n");
 
-  return `${head(
-    `${p.title} — ${SITE.name}`,
-    p.tagline
-  ).replace(/{{root}}/g, "../")}
+  return `${head(`${p.title} — ${SITE.name}`, p.tagline).replace(/{{root}}/g, "../")}
 ${nav("../")}
   <main>
     <section class="proj-hero">
+      <div class="cover"><img src="../assets/${p.id}-cover.svg" alt="${p.title} cover"/></div>
       <div class="container">
-        <a class="back-link" href="../index.html#work">← All work</a>
-        <span class="eyebrow">${p.category}</span>
+        <a class="back-link" href="../index.html#work">← Index</a>
+        <span class="label cat">${p.category}</span>
         <h1>${p.title}</h1>
-        <p class="proj-tagline">${p.tagline}</p>
-        <div class="proj-meta">${metaHtml}
+      </div>
+    </section>
+
+    <div class="container">
+      <div class="proj-meta">${metaHtml}
+      </div>
+    </div>
+
+    <section class="proj-body">
+      <div class="container">
+        <div class="proj-intro">
+          <p class="tagline">${p.tagline.replace(/—/g, "<em>—</em>")}</p>
+          <div class="prose">
+            <h3>Overview</h3>
+            ${p.overview.map((o) => `<p>${o}</p>`).join("\n            ")}
+            <h3>What I built</h3>
+            <ul>
+${features}
+            </ul>
+            <h3>Stack</h3>
+            <p>${stackLine}</p>
+          </div>
         </div>
-        <div class="proj-cover reveal">
-          <img src="../assets/${p.id}-cover.svg" alt="${p.title} cover"/>
+
+        <div class="stat-strip">
+${stat}
         </div>
       </div>
     </section>
 
-    <section class="proj-body">
+    <section class="gallery-wrap">
       <div class="container">
-        <div class="proj-layout">
-          <div class="prose">
-            <h2>Overview</h2>
-            ${p.overview.map((o) => `<p>${o}</p>`).join("\n            ")}
-            <h2>What I built</h2>
-            <ul>
-${features}
-            </ul>
-          </div>
-          <div>
-            <div class="side-card reveal">
-              <h4>Stack</h4>
-              <div class="tag-row">
-              ${stack}
-              </div>
-            </div>
-            <div class="side-card reveal">
-              <h4>Impact</h4>
-              <div class="side-list">
-${metrics}
-              </div>
-            </div>
-          </div>
-        </div>
-
         <div class="gallery">
 ${gallery}
         </div>
@@ -537,10 +514,10 @@ ${gallery}
       <div class="container">
         <a href="${next.id}.html">
           <div>
-            <div class="label">Next project</div>
-            <h3>${next.title} →</h3>
+            <div class="label k">Next Project ↗</div>
+            <h3>${next.title}</h3>
           </div>
-          <span class="btn btn-ghost">View →</span>
+          <span class="proj-num">${String(((idx + 1) % projects.length) + 1).padStart(2, "0")}</span>
         </a>
       </div>
     </section>

@@ -10,144 +10,103 @@
   <meta property="og:type" content="website"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23ff6a00'/%3E%3Ctext x='16' y='23' font-family='Arial' font-size='19' font-weight='bold' text-anchor='middle' fill='%23000'%3ER%3C/text%3E%3C/svg%3E"/>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;600;700;800;900&family=Roboto+Mono:wght@400;500;700&display=swap" rel="stylesheet"/>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23141416'/%3E%3Cg stroke='%23c9a24e' stroke-width='2'%3E%3Cpath d='M16 7v18M7 16h18'/%3E%3C/g%3E%3C/svg%3E"/>
   <link rel="stylesheet" href="./styles.css"/>
 </head>
 <body>
+  <span class="crosshair tl"></span>
+  <span class="crosshair tr"></span>
+  <span class="crosshair bl"></span>
+  <span class="crosshair br"></span>
   <header class="nav">
     <div class="container">
       <a class="brand" href="./index.html">
-        <span class="mark">R</span> Rastko Blagojevic
+        <span class="plus">+</span> Rastko&nbsp;Blagojevic
       </a>
       <nav class="nav-links">
         <a href="./index.html#work">Work</a>
         <a href="./index.html#about">About</a>
+        <a href="./index.html#feed">Feed</a>
         <a href="./index.html#contact">Contact</a>
-        <a class="btn btn-primary" href="mailto:hello@rastko.design">Let's talk</a>
       </nav>
       <button class="nav-toggle" aria-label="Menu">&#9776;</button>
     </div>
   </header>
+  <div class="hover-preview"><img src="assets/aurora-finance-cover.svg" alt=""/></div>
   <main>
     <section class="hero">
+      <div class="hero-grid"></div>
+      <div class="hero-glow"></div>
       <div class="container">
-        <span class="hero-badge"><span class="dot"></span> Available for select projects — 2026</span>
-        <h1>Design that feels <span class="accent">effortless.</span> Engineering that holds up.</h1>
-        <p class="hero-lead">I'm Rastko Blagojevic, a product designer & frontend engineer crafting fast, considered products — from first sketch to shipped code.</p>
-        <div class="hero-actions">
-          <a class="btn btn-primary" href="#work">View selected work →</a>
-          <a class="btn btn-ghost" href="mailto:hello@rastko.design">Get in touch</a>
+        <div class="hero-top">
+          <span class="label">Portfolio — Est. 2018</span>
+          <span class="label">Product Designer & Frontend Engineer</span>
+          <span class="label">Belgrade / Remote</span>
         </div>
-        <div class="hero-stats">
-          <div class="stat reveal"><div class="num">8<span class="accent">+</span></div><div class="label">Years of craft</div></div>
-          <div class="stat reveal"><div class="num">40<span class="accent">+</span></div><div class="label">Products shipped</div></div>
-          <div class="stat reveal"><div class="num">12</div><div class="label">Teams enabled</div></div>
-          <div class="stat reveal"><div class="num">4</div><div class="label">Design awards</div></div>
+        <h1>Design<br/><span class="thin">that feels</span> <em>effortless</em><br/>Built to <em>last.</em></h1>
+        <div class="hero-lead">
+          <p>I'm Rastko Blagojevic — a product designer & frontend engineer crafting fast, cinematic, high-craft products from first frame to shipped code.</p>
+          <span class="arrow">↓</span>
         </div>
       </div>
     </section>
 
     <div class="marquee">
       <div class="marquee-track">
-        <span>Fintech</span><span>·</span><span>Commerce</span><span>·</span><span>Data</span><span>·</span><span>Developer Tools</span><span>·</span><span>Design Systems</span><span>·</span><span>Mobile</span><span>·</span>
-        <span>Fintech</span><span>·</span><span>Commerce</span><span>·</span><span>Data</span><span>·</span><span>Developer Tools</span><span>·</span><span>Design Systems</span><span>·</span><span>Mobile</span><span>·</span>
+        <span>Product Design</span><span class="dot">+</span><span>Design Systems</span><span class="dot">+</span><span>Frontend Engineering</span><span class="dot">+</span><span>Prototyping</span><span class="dot">+</span><span>Brand</span><span class="dot">+</span><span>Motion</span><span class="dot">+</span>
+        <span>Product Design</span><span class="dot">+</span><span>Design Systems</span><span class="dot">+</span><span>Frontend Engineering</span><span class="dot">+</span><span>Prototyping</span><span class="dot">+</span><span>Brand</span><span class="dot">+</span><span>Motion</span><span class="dot">+</span>
       </div>
     </div>
 
     <section class="section" id="work">
       <div class="container">
-        <div class="section-head reveal">
-          <div>
-            <span class="eyebrow">Selected work</span>
-            <h2>Products, systems &amp; the details<br/>in between.</h2>
-          </div>
-          <p>A selection of recent work. Each project pairs a clear product story with the craft behind it.</p>
+        <div class="section-head">
+          <h2>Selected Work</h2>
+          <span class="idx">[ 06 PROJECTS / 2023—2025 ]</span>
         </div>
-        <div class="work-grid">
-        <a class="card reveal" href="projects/aurora-finance.html">
-          <div class="card-media">
-            <img src="assets/aurora-finance-cover.svg" alt="Aurora Finance preview" loading="lazy"/>
-            <span class="card-tag">Fintech</span>
-          </div>
-          <div class="card-body">
-            <h3>Aurora Finance</h3>
-            <p>A real-time trading and portfolio platform designed for clarity under pressure — turning volatile data into calm, confident decisions.</p>
-            <div class="card-foot">
-              <span class="card-year">Web App · 2025</span>
-              <span class="card-link">View project <span class="arrow">→</span></span>
-            </div>
-          </div>
+        <div class="projects">
+        <a class="proj-row" href="projects/aurora-finance.html" data-img="assets/aurora-finance-cover.svg">
+          <span class="proj-num">01</span>
+          <span class="proj-title">Aurora Finance</span>
+          <span class="proj-client">Aurora Labs<br/>Web App</span>
+          <span class="proj-year">2025</span>
+          <span class="proj-thumb"><img src="assets/aurora-finance-cover.svg" alt="Aurora Finance" loading="lazy"/></span>
         </a>
-        <a class="card reveal" href="projects/nebula-commerce.html">
-          <div class="card-media">
-            <img src="assets/nebula-commerce-cover.svg" alt="Nebula Commerce preview" loading="lazy"/>
-            <span class="card-tag">E-commerce</span>
-          </div>
-          <div class="card-body">
-            <h3>Nebula Commerce</h3>
-            <p>A headless commerce experience where every storefront feels custom-built, yet ships from one shared design system.</p>
-            <div class="card-foot">
-              <span class="card-year">Platform · 2025</span>
-              <span class="card-link">View project <span class="arrow">→</span></span>
-            </div>
-          </div>
+        <a class="proj-row" href="projects/nebula-commerce.html" data-img="assets/nebula-commerce-cover.svg">
+          <span class="proj-num">02</span>
+          <span class="proj-title">Nebula Commerce</span>
+          <span class="proj-client">Nebula Inc.<br/>Platform</span>
+          <span class="proj-year">2025</span>
+          <span class="proj-thumb"><img src="assets/nebula-commerce-cover.svg" alt="Nebula Commerce" loading="lazy"/></span>
         </a>
-        <a class="card reveal" href="projects/vortex-analytics.html">
-          <div class="card-media">
-            <img src="assets/vortex-analytics-cover.svg" alt="Vortex Analytics preview" loading="lazy"/>
-            <span class="card-tag">Data</span>
-          </div>
-          <div class="card-body">
-            <h3>Vortex Analytics</h3>
-            <p>Self-serve analytics that lets non-technical teams ask hard questions of their data — and actually understand the answers.</p>
-            <div class="card-foot">
-              <span class="card-year">SaaS · 2024</span>
-              <span class="card-link">View project <span class="arrow">→</span></span>
-            </div>
-          </div>
+        <a class="proj-row" href="projects/vortex-analytics.html" data-img="assets/vortex-analytics-cover.svg">
+          <span class="proj-num">03</span>
+          <span class="proj-title">Vortex Analytics</span>
+          <span class="proj-client">Vortex<br/>SaaS</span>
+          <span class="proj-year">2024</span>
+          <span class="proj-thumb"><img src="assets/vortex-analytics-cover.svg" alt="Vortex Analytics" loading="lazy"/></span>
         </a>
-        <a class="card reveal" href="projects/prism-design-system.html">
-          <div class="card-media">
-            <img src="assets/prism-design-system-cover.svg" alt="Prism preview" loading="lazy"/>
-            <span class="card-tag">Design System</span>
-          </div>
-          <div class="card-body">
-            <h3>Prism</h3>
-            <p>An open design system and component library that keeps 12 product teams in sync — from Figma variables to shipped code.</p>
-            <div class="card-foot">
-              <span class="card-year">Tooling · 2024</span>
-              <span class="card-link">View project <span class="arrow">→</span></span>
-            </div>
-          </div>
+        <a class="proj-row" href="projects/prism-design-system.html" data-img="assets/prism-design-system-cover.svg">
+          <span class="proj-num">04</span>
+          <span class="proj-title">Prism</span>
+          <span class="proj-client">Internal<br/>Tooling</span>
+          <span class="proj-year">2024</span>
+          <span class="proj-thumb"><img src="assets/prism-design-system-cover.svg" alt="Prism" loading="lazy"/></span>
         </a>
-        <a class="card reveal" href="projects/helio-travel.html">
-          <div class="card-media">
-            <img src="assets/helio-travel-cover.svg" alt="Helio Travel preview" loading="lazy"/>
-            <span class="card-tag">Mobile</span>
-          </div>
-          <div class="card-body">
-            <h3>Helio Travel</h3>
-            <p>A trip-planning app that turns the mess of tabs, screenshots and group chats into one shared, living itinerary.</p>
-            <div class="card-foot">
-              <span class="card-year">Travel · 2023</span>
-              <span class="card-link">View project <span class="arrow">→</span></span>
-            </div>
-          </div>
+        <a class="proj-row" href="projects/helio-travel.html" data-img="assets/helio-travel-cover.svg">
+          <span class="proj-num">05</span>
+          <span class="proj-title">Helio Travel</span>
+          <span class="proj-client">Helio<br/>Travel</span>
+          <span class="proj-year">2023</span>
+          <span class="proj-thumb"><img src="assets/helio-travel-cover.svg" alt="Helio Travel" loading="lazy"/></span>
         </a>
-        <a class="card reveal" href="projects/monolith-cms.html">
-          <div class="card-media">
-            <img src="assets/monolith-cms-cover.svg" alt="Monolith CMS preview" loading="lazy"/>
-            <span class="card-tag">Developer Tools</span>
-          </div>
-          <div class="card-body">
-            <h3>Monolith CMS</h3>
-            <p>A content platform editors love and developers trust — structured content, live preview, and zero fear of breaking the site.</p>
-            <div class="card-foot">
-              <span class="card-year">CMS · 2023</span>
-              <span class="card-link">View project <span class="arrow">→</span></span>
-            </div>
-          </div>
+        <a class="proj-row" href="projects/monolith-cms.html" data-img="assets/monolith-cms-cover.svg">
+          <span class="proj-num">06</span>
+          <span class="proj-title">Monolith CMS</span>
+          <span class="proj-client">Monolith<br/>CMS</span>
+          <span class="proj-year">2023</span>
+          <span class="proj-thumb"><img src="assets/monolith-cms-cover.svg" alt="Monolith CMS" loading="lazy"/></span>
         </a>
         </div>
       </div>
@@ -155,66 +114,45 @@
 
     <section class="section" id="about">
       <div class="container">
-        <div class="section-head reveal">
-          <div>
-            <span class="eyebrow">About</span>
-            <h2>I bridge design and code<br/>so nothing gets lost.</h2>
-          </div>
+        <div class="section-head">
+          <h2>About</h2>
+          <span class="idx">[ 001 / STUDIO ]</span>
         </div>
-        <div class="proj-layout">
-          <div class="prose reveal">
-            <p>For the last eight years I've worked at the seam between design and engineering — the place where good ideas usually break down. I care about the whole path: the research that frames a problem, the interface that solves it, and the code that ships it without compromise.</p>
-            <p>My work spans fintech, commerce, data and developer tooling, but the through-line is constant: reduce noise, respect attention, and sweat the details that make software feel trustworthy. I design in Figma, build in React, and I'm happiest owning a feature end to end.</p>
-          </div>
-          <div class="side-card reveal">
-            <h4>Capabilities</h4>
-            <div class="side-list">
-              <div class="row"><span>Product design</span><span>Expert</span></div>
-              <div class="row"><span>Design systems</span><span>Expert</span></div>
-              <div class="row"><span>Frontend (React)</span><span>Advanced</span></div>
-              <div class="row"><span>Prototyping</span><span>Advanced</span></div>
-              <div class="row"><span>User research</span><span>Proficient</span></div>
+        <div class="about-grid">
+          <p class="lead reveal">For eight years I've worked at the seam between <em>design</em> and <em>engineering</em> — the place where good ideas usually break down — and made it the place they come together.</p>
+          <div class="about-body reveal">
+            <p>My work spans fintech, commerce, data and developer tooling, but the through-line is constant: reduce noise, respect attention, and sweat the details that make software feel trustworthy and alive.</p>
+            <p>I design in Figma, build in React, and I'm happiest owning a feature end to end — from the first rough frame to the last shipped pixel.</p>
+            <div class="capabilities">
+              <div class="cap-row"><span>Product Design</span><span>Expert</span></div>
+              <div class="cap-row"><span>Design Systems</span><span>Expert</span></div>
+              <div class="cap-row"><span>Frontend / React</span><span>Advanced</span></div>
+              <div class="cap-row"><span>Prototyping &amp; Motion</span><span>Advanced</span></div>
+              <div class="cap-row"><span>User Research</span><span>Proficient</span></div>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="cta">
+    <section class="cta" id="contact">
       <div class="container">
-        <span class="eyebrow" style="justify-content:center">Let's build</span>
-        <h2>Have a product worth doing right?</h2>
-        <p>I take on a small number of projects at a time so each gets real focus. If that sounds like what you need, let's talk.</p>
-        <a class="btn btn-primary" href="mailto:hello@rastko.design">Start a conversation →</a>
+        <span class="label">Let's build something</span>
+        <h2>Have a project<br/>worth doing right?<br/><a href="mailto:hello@rastko.design">Get in touch ↗</a></h2>
+        <p>I take on a small number of projects at a time so each gets real focus.</p>
       </div>
     </section>
   </main>
-  <footer class="footer" id="contact">
+  <footer class="footer">
     <div class="container">
-      <div class="footer-top">
-        <div class="footer-brand">
-          <a class="brand" href="./index.html"><span class="mark">R</span> Rastko Blagojevic</a>
-          <p>Product Designer & Frontend Engineer. Designing and building calm, high-craft product experiences.</p>
-        </div>
-        <div class="footer-cols">
-          <div class="footer-col">
-            <h5>Explore</h5>
-            <a href="./index.html#work">Work</a>
-            <a href="./index.html#about">About</a>
-            <a href="./index.html#contact">Contact</a>
-          </div>
-          <div class="footer-col">
-            <h5>Connect</h5>
-            <a href="mailto:hello@rastko.design">Email</a>
-            <a href="https://github.com/Musaka96" target="_blank" rel="noopener">GitHub</a>
-            <a href="#">LinkedIn</a>
-          </div>
-        </div>
+      <span>© <span data-year>2025</span> Rastko Blagojevic</span>
+      <div class="col">
+        <a href="mailto:hello@rastko.design">Email</a>
+        <a href="https://github.com/Musaka96" target="_blank" rel="noopener">GitHub</a>
+        <a href="#">LinkedIn</a>
+        <a href="./index.html#work">Work</a>
       </div>
-      <div class="footer-bottom">
-        <span>© <span data-year>2025</span> Rastko Blagojevic. All rights reserved.</span>
-        <span>Built with care · Deployed on Vercel</span>
-      </div>
+      <span>Design &amp; Engineering · Product Designer</span>
     </div>
   </footer>
   <script src="./script.js"></script>

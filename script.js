@@ -1,13 +1,12 @@
-// Rastko Blagojevic — portfolio interactions
+// Rastko Blagojevic — portfolio interactions (Blur Studio inspired)
 (function () {
   var nav = document.querySelector(".nav");
   var toggle = document.querySelector(".nav-toggle");
   var links = document.querySelector(".nav-links");
 
-  // Sticky nav border on scroll
+  // Sticky nav background on scroll
   function onScroll() {
-    if (!nav) return;
-    nav.classList.toggle("scrolled", window.scrollY > 12);
+    if (nav) nav.classList.toggle("scrolled", window.scrollY > 12);
   }
   window.addEventListener("scroll", onScroll, { passive: true });
   onScroll();
@@ -19,6 +18,44 @@
     });
     links.addEventListener("click", function (e) {
       if (e.target.tagName === "A") links.classList.remove("open");
+    });
+  }
+
+  // Cursor-following hover preview for the project list (desktop)
+  var preview = document.querySelector(".hover-preview");
+  var previewImg = preview ? preview.querySelector("img") : null;
+  var rows = document.querySelectorAll(".proj-row[data-img]");
+  var fine = window.matchMedia("(pointer: fine)").matches;
+
+  if (preview && previewImg && rows.length && fine) {
+    var tx = 0, ty = 0, cx = 0, cy = 0, raf = null;
+    function loop() {
+      cx += (tx - cx) * 0.16;
+      cy += (ty - cy) * 0.16;
+      preview.style.left = cx + "px";
+      preview.style.top = cy + "px";
+      raf = requestAnimationFrame(loop);
+    }
+    rows.forEach(function (row) {
+      row.addEventListener("mouseenter", function () {
+        previewImg.src = row.getAttribute("data-img");
+        preview.classList.add("show");
+        if (!raf) loop();
+      });
+      row.addEventListener("mouseleave", function () {
+        preview.classList.remove("show");
+      });
+    });
+    document.addEventListener("mousemove", function (e) {
+      tx = e.clientX;
+      ty = e.clientY;
+    });
+    document.querySelector(".projects").addEventListener("mouseleave", function () {
+      preview.classList.remove("show");
+      if (raf) {
+        cancelAnimationFrame(raf);
+        raf = null;
+      }
     });
   }
 
@@ -45,9 +82,8 @@
     });
   }
 
-  // Current year in footer
-  var y = document.querySelectorAll("[data-year]");
-  y.forEach(function (el) {
+  // Footer year
+  document.querySelectorAll("[data-year]").forEach(function (el) {
     el.textContent = new Date().getFullYear();
   });
 })();
