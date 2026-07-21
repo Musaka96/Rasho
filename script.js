@@ -1,63 +1,53 @@
-// Rastko Blagojevic — portfolio interactions (Blur Studio inspired)
+// Rastko Blagojevic — 3D portfolio interactions (blur.com inspired)
 (function () {
-  var nav = document.querySelector(".nav");
-  var toggle = document.querySelector(".nav-toggle");
-  var links = document.querySelector(".nav-links");
+  var body = document.body;
+  var menuBtn = document.querySelector(".menu-btn");
+  var overlay = document.querySelector(".menu-overlay");
 
-  // Sticky nav background on scroll
-  function onScroll() {
-    if (nav) nav.classList.toggle("scrolled", window.scrollY > 12);
+  // Menu overlay
+  function closeMenu() {
+    body.classList.remove("menu-open");
+    if (overlay) setTimeout(function () { overlay.hidden = true; }, 400);
   }
-  window.addEventListener("scroll", onScroll, { passive: true });
-  onScroll();
-
-  // Mobile menu
-  if (toggle && links) {
-    toggle.addEventListener("click", function () {
-      links.classList.toggle("open");
-    });
-    links.addEventListener("click", function (e) {
-      if (e.target.tagName === "A") links.classList.remove("open");
-    });
-  }
-
-  // Cursor-following hover preview for the project list (desktop)
-  var preview = document.querySelector(".hover-preview");
-  var previewImg = preview ? preview.querySelector("img") : null;
-  var rows = document.querySelectorAll(".proj-row[data-img]");
-  var fine = window.matchMedia("(pointer: fine)").matches;
-
-  if (preview && previewImg && rows.length && fine) {
-    var tx = 0, ty = 0, cx = 0, cy = 0, raf = null;
-    function loop() {
-      cx += (tx - cx) * 0.16;
-      cy += (ty - cy) * 0.16;
-      preview.style.left = cx + "px";
-      preview.style.top = cy + "px";
-      raf = requestAnimationFrame(loop);
-    }
-    rows.forEach(function (row) {
-      row.addEventListener("mouseenter", function () {
-        previewImg.src = row.getAttribute("data-img");
-        preview.classList.add("show");
-        if (!raf) loop();
-      });
-      row.addEventListener("mouseleave", function () {
-        preview.classList.remove("show");
-      });
-    });
-    document.addEventListener("mousemove", function (e) {
-      tx = e.clientX;
-      ty = e.clientY;
-    });
-    document.querySelector(".projects").addEventListener("mouseleave", function () {
-      preview.classList.remove("show");
-      if (raf) {
-        cancelAnimationFrame(raf);
-        raf = null;
+  if (menuBtn && overlay) {
+    menuBtn.addEventListener("click", function () {
+      if (body.classList.contains("menu-open")) {
+        closeMenu();
+      } else {
+        overlay.hidden = false;
+        requestAnimationFrame(function () { body.classList.add("menu-open"); });
       }
     });
+    overlay.addEventListener("click", function (e) {
+      if (e.target.tagName === "A" || e.target === overlay) closeMenu();
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") closeMenu();
+    });
   }
+
+  // Scroll-progress bar (cyan, top)
+  var bar = document.querySelector(".scroll-progress span");
+  // Parallax panels
+  var parallax = Array.prototype.slice.call(document.querySelectorAll("[data-parallax] .panel-media img"));
+
+  function onScroll() {
+    var st = window.scrollY;
+    var max = document.documentElement.scrollHeight - window.innerHeight;
+    if (bar) bar.style.width = (max > 0 ? (st / max) * 100 : 0) + "%";
+
+    var vh = window.innerHeight;
+    for (var i = 0; i < parallax.length; i++) {
+      var img = parallax[i];
+      var rect = img.parentElement.parentElement.getBoundingClientRect();
+      if (rect.bottom < -100 || rect.top > vh + 100) continue;
+      var progress = (rect.top + rect.height / 2 - vh / 2) / vh; // -1..1 ish
+      img.style.transform = "translateY(" + (progress * 10).toFixed(2) + "%)";
+    }
+  }
+  window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("resize", onScroll);
+  onScroll();
 
   // Reveal on scroll
   var revealables = document.querySelectorAll(".reveal");
@@ -71,15 +61,11 @@
           }
         });
       },
-      { threshold: 0.12 }
+      { threshold: 0.14 }
     );
-    revealables.forEach(function (el) {
-      io.observe(el);
-    });
+    revealables.forEach(function (el) { io.observe(el); });
   } else {
-    revealables.forEach(function (el) {
-      el.classList.add("in");
-    });
+    revealables.forEach(function (el) { el.classList.add("in"); });
   }
 
   // Footer year

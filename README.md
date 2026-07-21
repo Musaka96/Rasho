@@ -1,26 +1,38 @@
-# Rastko Blagojevic — Portfolio
+# Rastko Blagojevic — 3D Character & Texture Artist
 
-A fast, dependency-free portfolio website inspired by the dark/orange aesthetic of
-[blur.com](https://www.blur.com/). Pure static HTML/CSS/JS — no build step, no
-framework — so it deploys instantly on Vercel and is trivial to edit.
+Portfolio website for a 3D character / texture / MetaHuman artist, with a
+cinematic layout and mood modelled on [blur.com](https://www.blur.com/)
+(Blur Studio): full-bleed project panels, near-monochrome with a cyan accent,
+thin wide-tracked titles, a crosshair + head logo, and a scroll-progress bar.
 
-## Live structure
+Pure static HTML/CSS/JS — no build step, no framework — so it deploys instantly
+on Vercel and is trivial to edit.
+
+## Structure
 
 ```
-index.html                 Home: hero, work grid, about, contact
-projects/<slug>.html       One page per project (preview art + write-up)
-assets/<slug>-*.svg        Self-contained gradient preview art
+index.html                 Home: full-viewport hero + full-bleed project panels + about + contact
+projects/<slug>.html       One page per project (hero + pipeline + PBR gallery)
+assets/<slug>-cover.svg    Beauty render used on the home panel + project hero
+assets/<slug>-beauty.svg   Beauty render still
+assets/<slug>-wire.svg     Wireframe / topology still
+assets/<slug>-clay.svg     Clay / ambient-occlusion still
+assets/<slug>-texture.svg  PBR texture-channel breakdown
 styles.css                 Design system (colors, layout, components)
-script.js                  Nav, mobile menu, scroll reveals
+script.js                  Menu, scroll-progress bar, panel parallax, reveals
 generate.mjs               Source-of-truth generator (see below)
 vercel.json                Static hosting + asset caching config
 ```
 
+The SVGs are **placeholder render stills**. Replace them with your real renders
+(keep the same file names, or point the `<img src>` in the HTML at new files)
+to make the site yours.
+
 ## Editing content
 
 All project content lives in one place: the `projects` array at the top of
-[`generate.mjs`](generate.mjs). To add or edit a project, change that data and
-regenerate the HTML + art:
+[`generate.mjs`](generate.mjs) — title, client, discipline, year, brief,
+pipeline steps, stats and software. Edit that data and regenerate:
 
 ```bash
 node generate.mjs
@@ -29,9 +41,8 @@ node generate.mjs
 This rewrites `index.html`, every page in `projects/`, and the SVG art in
 `assets/`. Commit the regenerated files.
 
-To swap the placeholder art for real screenshots, drop image files into
-`assets/` and point the `<img src>` in the relevant `projects/*.html` (or update
-the `svg()`/image logic in `generate.mjs`) at them.
+Also update the placeholder contact details in the `SITE` object at the top of
+`generate.mjs` (email, ArtStation URL) before going live.
 
 ## Deploying on Vercel
 
@@ -49,5 +60,5 @@ Any static server works, e.g.:
 
 ```bash
 npx serve .
-# then open http://localhost:3000
+# then open the printed http://localhost:… URL
 ```

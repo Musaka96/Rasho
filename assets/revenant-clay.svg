@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+  <defs>
+    <radialGradient id="clayrevenantclay" cx="40%" cy="32%" r="75%">
+      <stop offset="0" stop-color="#d8d8d4"/><stop offset="0.5" stop-color="#8a8a86"/><stop offset="1" stop-color="#2a2a2c"/>
+    </radialGradient>
+    <filter id="csrevenantclay"><feGaussianBlur stdDeviation="20"/></filter>
+    <radialGradient id="cvrevenantclay" cx="50%" cy="45%" r="75%"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity="0.88"/></radialGradient>
+  </defs>
+  <rect width="1600" height="900" fill="#141416"/>
+  <ellipse cx="800" cy="846" rx="300" ry="46" fill="#000" opacity="0.5" filter="url(#csrevenantclay)"/>
+  <g filter="url(#csrevenantclay)">
+    <ellipse cx="800" cy="486.00000000000006" rx="320" ry="370" fill="url(#clayrevenantclay)"/>
+    <ellipse cx="800" cy="776" rx="250" ry="140" fill="url(#clayrevenantclay)"/>
+  </g>
+  <rect width="1600" height="900" fill="url(#cvrevenantclay)"/>
+  
+  <g stroke="#f2f2f0" stroke-opacity="0.4" stroke-width="1.4">
+    <path d="M56 40 v26 M43 53 h26"/>
+    <path d="M1544 40 v26 M1531 53 h26"/>
+  </g>
+  <text x="56" y="804" font-family="'Roboto Mono', monospace" font-size="20" letter-spacing="4" fill="#f2f2f0" opacity="0.65">REVENANT</text>
+  <text x="56" y="846" font-family="'Roboto Mono', monospace" font-size="30" letter-spacing="6" fill="#2fe6e6">CLAY / AO</text>
+  <text x="1544" y="846" text-anchor="end" font-family="'Roboto Mono', monospace" font-size="20" letter-spacing="3" fill="#2fe6e6">● 4K</text>
+</svg>
