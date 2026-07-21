@@ -197,6 +197,11 @@ body.menu-open .menu-btn .plus {
   opacity: 0;
   transition: opacity 0.4s ease;
 }
+/* The [hidden] attribute must win over display:flex, or the invisible
+   overlay intercepts every click on the page. */
+.menu-overlay[hidden] {
+  display: none;
+}
 .menu-overlay:not([hidden]) {
   animation: fade 0.4s ease forwards;
 }
