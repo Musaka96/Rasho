@@ -300,12 +300,12 @@ function footer(root) {
 function panel(p, idx) {
   const num = String(idx + 1).padStart(2, "0");
   return `      <a class="panel" href="projects/${p.id}.html" data-parallax>
-        <div class="panel-media"><img src="assets/${p.id}-cover.jpg" alt="${p.title} — ${p.discipline}" loading="lazy"/></div>
+        <div class="panel-media"><img src="assets/${p.id}-cover.jpg" alt="${p.discipline}" loading="lazy"/></div>
         <div class="panel-shade"></div>
         <div class="panel-content">
-          <div class="panel-tag"><span class="idx">${num}</span> ${p.discipline}</div>
-          <h2 class="panel-title">${p.title}</h2>
-          <div class="panel-meta">${p.client} — ${p.year}</div>
+          <div class="panel-tag"><span class="idx">${num}</span> ${p.client}</div>
+          <h2 class="panel-title">${p.discipline}</h2>
+          <div class="panel-meta">${p.year}</div>
         </div>
         <span class="panel-view">View project ↗</span>
       </a>`;
@@ -407,7 +407,6 @@ function projectPage(p, idx) {
   const next = projects[(idx + 1) % projects.length];
   const meta = [
     ["Client", p.client],
-    ["Discipline", p.discipline],
     ["Role", p.role],
     ["Year", p.year],
   ]
@@ -419,22 +418,22 @@ function projectPage(p, idx) {
     .map(
       (cap, i) =>
         `        <figure class="reveal">
-          <img src="../assets/${p.id}-${i + 1}.jpg" alt="${p.title} — ${cap.replace(/&amp;/g, "and")}" loading="lazy"/>
+          <img src="../assets/${p.id}-${i + 1}.jpg" alt="${p.discipline} — ${cap.replace(/&amp;/g, "and")}" loading="lazy"/>
           <figcaption><span class="idx">0${i + 1}</span>${cap}</figcaption>
         </figure>`
     )
     .join("\n");
 
-  return `${head(`${p.title} — ${SITE.name}`, p.tagline).replace(/{{root}}/g, "../")}
+  return `${head(`${p.discipline.replace(/&amp;/g, "&")} — ${SITE.name}`, p.tagline).replace(/{{root}}/g, "../")}
 ${nav("../")}
   <main>
     <section class="proj-hero">
-      <div class="proj-cover"><img src="../assets/${p.id}-cover.jpg" alt="${p.title}"/></div>
+      <div class="proj-cover"><img src="../assets/${p.id}-cover.jpg" alt="${p.discipline}"/></div>
       <div class="proj-hero-in">
         <a class="back" href="../index.html#work">← Index</a>
-        <div class="proj-tag"><span class="idx">${String(idx + 1).padStart(2, "0")}</span> ${p.discipline}</div>
-        <h1>${p.title}</h1>
-        <div class="proj-client">${p.client} — ${p.year}</div>
+        <div class="proj-tag"><span class="idx">${String(idx + 1).padStart(2, "0")}</span> ${p.client}</div>
+        <h1>${p.discipline}</h1>
+        <div class="proj-client">${p.year}</div>
       </div>
       <div class="hero-scroll"><span>Scroll</span><span class="line"></span></div>
     </section>
@@ -464,8 +463,8 @@ ${gallery}
 
     <a class="next-proj" href="${next.id}.html">
       <span class="np-label">Next Project ↗</span>
-      <span class="np-title">${next.title}</span>
-      <span class="np-disc">${next.discipline}</span>
+      <span class="np-title">${next.discipline}</span>
+      <span class="np-disc">${next.client} — ${next.year}</span>
     </a>
   </main>
 ${footer("../")}`;
