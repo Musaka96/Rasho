@@ -73,3 +73,82 @@
     el.textContent = new Date().getFullYear();
   });
 })();
+
+// Lightbox — click any project image to view it fullscreen
+(function () {
+  var figs = Array.prototype.slice.call(document.querySelectorAll(".gallery figure"));
+  if (!figs.length) return;
+
+  var items = figs.map(function (f) {
+    var c = f.querySelector("figcaption");
+    var cap = "";
+    if (c) {
+      var cl = c.cloneNode(true);
+      var s = cl.querySelector(".idx");
+      if (s) s.remove();
+      cap = cl.textContent.trim();
+    }
+    return { img: f.querySelector("img"), cap: cap };
+  });
+
+  var box = document.createElement("div");
+  box.className = "lightbox";
+  box.hidden = true;
+  box.innerHTML =
+    '<button class="lb-close" aria-label="Close">&#10005;</button>' +
+    '<button class="lb-nav lb-prev" aria-label="Previous">&#8249;</button>' +
+    '<button class="lb-nav lb-next" aria-label="Next">&#8250;</button>' +
+    '<figure class="lb-figure"><img alt=""/><figcaption></figcaption></figure>' +
+    '<div class="lb-count"></div>';
+  document.body.appendChild(box);
+
+  var lbImg = box.querySelector("img");
+  var lbCap = box.querySelector("figcaption");
+  var lbCount = box.querySelector(".lb-count");
+  var idx = 0;
+
+  function show(i) {
+    idx = (i + items.length) % items.length;
+    var it = items[idx];
+    lbImg.src = it.img.currentSrc || it.img.src;
+    lbImg.alt = it.img.alt || "";
+    lbCap.textContent = it.cap;
+    lbCount.textContent = idx + 1 + " / " + items.length;
+  }
+  function open(i) {
+    show(i);
+    box.hidden = false;
+    document.body.classList.add("lb-open");
+  }
+  function close() {
+    box.hidden = true;
+    document.body.classList.remove("lb-open");
+    lbImg.removeAttribute("src");
+  }
+
+  figs.forEach(function (f, i) {
+    f.style.cursor = "zoom-in";
+    f.addEventListener("click", function (e) {
+      e.preventDefault();
+      open(i);
+    });
+  });
+  box.querySelector(".lb-close").addEventListener("click", close);
+  box.querySelector(".lb-prev").addEventListener("click", function (e) {
+    e.stopPropagation();
+    show(idx - 1);
+  });
+  box.querySelector(".lb-next").addEventListener("click", function (e) {
+    e.stopPropagation();
+    show(idx + 1);
+  });
+  box.addEventListener("click", function (e) {
+    if (e.target === box || e.target.tagName === "FIGURE") close();
+  });
+  document.addEventListener("keydown", function (e) {
+    if (box.hidden) return;
+    if (e.key === "Escape") close();
+    else if (e.key === "ArrowLeft") show(idx - 1);
+    else if (e.key === "ArrowRight") show(idx + 1);
+  });
+})();
