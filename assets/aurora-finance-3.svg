@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="800" viewBox="0 0 1280 800" fill="none">
+  <defs>
+    <linearGradient id="gaurorafinance3" x1="0" y1="0" x2="1" y2="1" gradientTransform="rotate(141 .5 .5)">
+      <stop offset="0" stop-color="#ff6a00"/>
+      <stop offset="1" stop-color="#ff1f6b"/>
+    </linearGradient>
+    <pattern id="gaurorafinance3grid" width="48" height="48" patternUnits="userSpaceOnUse">
+      <path d="M48 0H0V48" stroke="#ffffff" stroke-opacity="0.06" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="1280" height="800" fill="#0a0a0c"/>
+  <rect width="1280" height="800" fill="url(#gaurorafinance3)" opacity="0.9"/>
+  <g style="mix-blend-mode:soft-light"><circle cx="960" cy="540" r="118" fill="#fff" opacity="0.04"/><circle cx="190" cy="710" r="66" fill="#fff" opacity="0.06"/><circle cx="420" cy="260" r="144" fill="#fff" opacity="0.08"/><circle cx="650" cy="430" r="92" fill="#fff" opacity="0.04"/><circle cx="880" cy="600" r="40" fill="#fff" opacity="0.06"/></g>
+  <rect width="1280" height="800" fill="url(#gaurorafinance3grid)"/>
+  <rect x="0" y="0" width="1280" height="800" fill="#000" opacity="0.22"/>
+  <text x="72" y="650" font-family="Inter, Arial, sans-serif" font-size="34" font-weight="600" fill="#ffffff" opacity="0.72">Aurora Finance</text>
+  <text x="72" y="730" font-family="Inter, Arial, sans-serif" font-size="96" font-weight="800" letter-spacing="-3" fill="#ffffff">Analytics</text>
+  <circle cx="1184" cy="96" r="14" fill="#ffffff" opacity="0.9"/>
+</svg>
