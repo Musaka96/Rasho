@@ -1,206 +1,216 @@
 // ==========================================================================
 // Static site generator — Rastko Blagojevic, 3D Character & Texture Artist.
-// Layout & mood modelled on the live blur.com (Blur Studio): full-bleed
-// cinematic project panels, near-monochrome with a cyan accent, thin
-// wide-tracked titles, crosshair + head logo, scroll-progress bar.
-// Run:  node generate.mjs   ->  index.html, projects/*.html, assets/*.svg
+// Content from his CV + Closed Portfolio. Layout modelled on blur.com
+// (Blur Studio): full-bleed cinematic panels, near-monochrome, cyan accent,
+// thin wide titles, crosshair + head logo, scroll-progress bar.
+// Run:  node generate.mjs  ->  index.html, projects/*.html, studio-work.html
+// Real render images live in assets/ (JPEG); this script does not create them.
 // ==========================================================================
 import { writeFileSync, mkdirSync } from "node:fs";
 import { dirname } from "node:path";
 
-// ------------------------------- Data ------------------------------------
+// ------------------------------- Site ------------------------------------
 
 const SITE = {
   name: "Rastko Blagojevic",
   role: "3D Character & Texture Artist",
-  disciplines: "MetaHuman · Character Art · Look Development",
-  email: "rastko.blagojevic@gmail.com",
+  disciplines: "Character Art · Creature Sculpting · Texturing",
+  location: "Novi Sad, Serbia",
+  email: "rastko.blagojevic.1@gmail.com",
+  phone: "+381 62 855 9466",
+  artstation: "https://www.artstation.com/mokosha",
+  linkedin: "https://www.linkedin.com/in/rastko-blagojevic-6b654020b/",
   github: "https://github.com/Musaka96",
-  artstation: "https://www.artstation.com/",
-  location: "Belgrade / Remote",
 };
+
+const SKILLS = [
+  "Autodesk Maya", "ZBrush", "XGen", "Blender", "Marvelous Designer",
+  "Substance Painter", "Mari", "Marmoset", "Wrap3D", "Adobe Photoshop",
+  "Affinity", "Unreal Engine",
+];
+
+// --------------------------- Portfolio projects --------------------------
+// gallery = caption per assets/<id>-<n>.jpg (in order). Cover = <id>-cover.jpg.
 
 const projects = [
   {
-    id: "echo",
-    title: "Echo",
+    id: "project-holland",
+    title: "Project Holland",
+    client: "Airship Interactive",
+    discipline: "Character Art · NPC Heads",
+    year: "2024",
+    tagline:
+      "A library of production NPC heads for an unannounced AAA title — a diverse cast of sculpts and skin built on one consistent facial topology.",
+    role: "3D Character Artist — modeling & texturing",
+    software: ["ZBrush", "Maya", "Wrap3D", "Mari", "Substance Painter", "Photoshop"],
+    brief: [
+      "Project Holland is a set of believable NPC heads spanning ages and ethnicities, all authored on a shared facial topology so they stay riggable and consistent across the game.",
+      "Each head was sculpted for accurate anatomy, then given hand-authored PBR skin — pore-level detail, subsurface response and realistic variation — so the whole cast reads as one coherent, production-ready population.",
+    ],
+    pipeline: [
+      "Base-mesh conforming and sculpt refinement in ZBrush.",
+      "Topology conforming / wrap onto a shared facial base (Wrap3D, Maya).",
+      "PBR skin authored across Mari and Substance Painter.",
+      "Look dev and beauty passes over neutral studio lighting.",
+    ],
+    gallery: [
+      "Textured head — front &amp; three-quarter",
+      "Sculpt &amp; profile",
+      "Child head — Sub-Saharan African variation",
+      "Head variation — beauty over clay",
+      "Feminine head — texture &amp; sculpt passes",
+    ],
+  },
+  {
+    id: "hellhound",
+    title: "Hellhound",
     client: "Personal",
-    discipline: "Digital Human",
-    year: "2025",
-    c1: "#2fe6e6",
-    c2: "#1b4a63",
+    discipline: "Creature Texturing",
+    year: "2024",
     tagline:
-      "A real-time digital human built in MetaHuman and pushed far past the preset — custom sculpt, hand-authored skin, and a groom that holds up in close-up.",
-    role: "Character Art · Look Dev · Groom",
-    software: ["MetaHuman Creator", "ZBrush", "Substance 3D Painter", "XGen", "Unreal Engine 5", "Marmoset Toolbag"],
+      "A hairless hound demon — a texturing study in raw skin, scarred ritual markings and dry, veined muscle.",
+    role: "Texturing &amp; Look Development",
+    software: ["ZBrush", "Mari", "Substance Painter", "Photoshop"],
     brief: [
-      "Echo started as a question: how human can a real-time MetaHuman feel once you stop trusting the presets? I rebuilt the face from a custom ZBrush sculpt, wrapped it back onto the MetaHuman topology, and hand-authored the skin so pores, blood flow and micro-detail read under hard light.",
-      "The groom was rebuilt in XGen and ported to Unreal's strand-based hair, with look dev and lighting finished in-engine so everything you see runs at frame rate — no offline cheats.",
+      "Hellhound is a texturing-focused piece: the sculpt exists to carry the skin. The goal was a convincing hairless creature hide — thin over bone, thick and folded at the joints, marked with pale ritual scarring.",
+      "Layered maps drive subsurface, roughness break-up and micro-detail so the surface shifts believably from taut snout to loose, veined body under studio light.",
     ],
-    breakdown: [
-      "Custom high-poly face sculpt in ZBrush over a MetaHuman base.",
-      "Wrap + retopology back onto MetaHuman-compatible topology.",
-      "Multi-layer PBR skin with SSS authored in Substance 3D Painter.",
-      "Strand groom built in XGen, converted to UE5 hair cards & strands.",
-      "Real-time look dev, lighting and final frames in Unreal Engine 5.",
+    pipeline: [
+      "Detail sculpt and skin pass in ZBrush.",
+      "UDIM texturing across Mari and Substance Painter.",
+      "Ritual scarring and albedo break-up in Photoshop.",
+      "Subsurface and roughness look dev with material spheres.",
     ],
-    stats: [
-      ["Rig", "MetaHuman"],
-      ["Skin", "4K PBR + SSS"],
-      ["Hair", "Strand-based"],
-      ["Engine", "UE5 · Lumen"],
+    gallery: ["Full body — material response study"],
+  },
+  {
+    id: "wip-creatures",
+    title: "Creature Studies",
+    client: "Personal — WIP",
+    discipline: "Creature Modeling &amp; Texturing",
+    year: "2025",
+    tagline:
+      "Ongoing creature work — from a horned quadruped's full model, topology and UVs to an elongated multi-limbed biped in clay.",
+    role: "Modeling · Retopology · UVs · Texturing",
+    software: ["ZBrush", "Maya", "Mari", "Substance Painter", "Photoshop"],
+    brief: [
+      "A running set of original creatures explored end to end — silhouette and anatomy first, then clean production topology and UVs ready for texture.",
+      "The horned quadruped shows the full pipeline from textured beauty to wireframe and unwrapped shells; the elongated biped is an in-progress anatomy and proportion study in clay.",
+    ],
+    pipeline: [
+      "Concept-driven high-poly sculpt in ZBrush.",
+      "Production retopology and UV layout in Maya.",
+      "Texture authoring in Mari / Substance Painter.",
+      "Look dev over neutral lighting with calibration charts.",
+    ],
+    gallery: [
+      "Horned quadruped — topology &amp; UV layout",
+      "Biped creature — clay, front",
+      "Biped creature — clay, three-quarter",
+      "Biped creature — clay, side",
     ],
   },
   {
-    id: "revenant",
-    title: "Revenant",
-    client: "AAA — NDA",
-    discipline: "Hero Character",
+    id: "canine-anatomy",
+    title: "Canine Anatomy",
+    client: "Personal — Study",
+    discipline: "Anatomy · Sculpting",
     year: "2025",
-    c1: "#ff5a3c",
-    c2: "#3a2320",
     tagline:
-      "A hero game character taken from concept to in-engine — heavy hard-surface armor over a damaged body, built to survive extreme close-ups.",
-    role: "Character Art · Hard-Surface · Texturing",
-    software: ["ZBrush", "Maya", "Substance 3D Painter", "Marmoset Toolbag", "Marvelous Designer"],
+      "An anatomy study of a hound — from the surface sculpt down to the full muscular écorché beneath it.",
+    role: "Sculpting — Henning Sanden mentorship",
+    software: ["ZBrush"],
     brief: [
-      "Revenant is a hero asset built to the standard a cinematic camera demands: every buckle, scar and worn edge holds up when the lens gets close. The silhouette was locked in ZBrush before a single production-ready polygon existed.",
-      "Cloth was simulated in Marvelous Designer, hard-surface armor blockmeshed in Maya, and the whole character unified through a layered, story-driven texture pass — this armor has clearly been worn, broken and repaired.",
+      "This study pairs a finished surface sculpt with its underlying musculature, built to understand how the forms of a lean hound are driven by the anatomy underneath.",
+      "Completed during a creature-modeling mentorship with Henning Sanden, the focus was accurate muscle origins and insertions translating into believable surface tension and silhouette.",
     ],
-    breakdown: [
-      "Silhouette and forms explored as a ZBrush high-poly.",
-      "Cloth and straps simulated in Marvelous Designer.",
-      "Game-res retopology, UVs and bakes through Maya + Marmoset.",
-      "Story-driven PBR texturing with edge wear and damage passes.",
-      "Real-time presentation and lighting in Marmoset Toolbag.",
+    pipeline: [
+      "Reference gathering and proportion blockout.",
+      "Muscular écorché sculpt in ZBrush.",
+      "Surface / skin pass over the anatomy.",
+      "Multi-angle presentation renders.",
     ],
-    stats: [
-      ["Tris", "128k"],
-      ["Textures", "4K · 3 UDIM"],
-      ["Maps", "Albedo/Rough/Metal/Normal"],
-      ["Target", "Real-time"],
+    gallery: [
+      "Muscular écorché — lateral",
+      "Écorché — full body",
+      "Surface sculpt — three-quarter",
+      "Surface sculpt — profile",
     ],
   },
   {
-    id: "sandveil",
-    title: "Sandveil",
+    id: "hardsurface",
+    title: "Alpine Boot",
     client: "Personal",
-    discipline: "Creature Design",
-    year: "2024",
-    c1: "#e8a43c",
-    c2: "#4a3618",
-    tagline:
-      "An original desert creature — anatomy-first sculpt, layered skin shading, and a look dev pass that sells weight, dust and dry heat.",
-    role: "Creature Art · Sculpt · Texturing",
-    software: ["ZBrush", "Substance 3D Painter", "Mari", "Blender", "Marmoset Toolbag"],
-    brief: [
-      "Sandveil is a personal creature study driven by believable anatomy — I wanted muscle, cartilage and keratin to read as one connected organism rather than a collection of details.",
-      "Skin was textured across Mari and Substance for scale-level control, then look-developed with dust build-up in the crevices and a dry, sun-bleached sheen that grounds the creature in its environment.",
-    ],
-    breakdown: [
-      "Anatomy-driven high-poly sculpt and detail pass in ZBrush.",
-      "UV layout and displacement extraction for render.",
-      "Layered skin, scales and keratin authored in Mari + Substance.",
-      "Dust, wear and subsurface look dev.",
-      "Lighting and beauty renders in Marmoset Toolbag.",
-    ],
-    stats: [
-      ["Sculpt", "38M ZBrush"],
-      ["Textures", "8K UDIM"],
-      ["Maps", "Displacement + SSS"],
-      ["Render", "Marmoset"],
-    ],
-  },
-  {
-    id: "hollow-king",
-    title: "Hollow King",
-    client: "Indie Title",
-    discipline: "Stylized Character",
-    year: "2024",
-    c1: "#9b6cff",
-    c2: "#241b3a",
-    tagline:
-      "A stylized hero for an indie game — exaggerated forms, hand-painted-feel PBR, and a clean real-time budget without losing the sculpt's character.",
-    role: "Character Art · Stylized Texturing",
-    software: ["ZBrush", "3D-Coat", "Substance 3D Painter", "Maya", "Marmoset Toolbag"],
-    brief: [
-      "Hollow King leans into stylization — big confident shapes, chunky armor and a face with real personality. The challenge was carrying that charm from a detailed sculpt down to a tight real-time budget.",
-      "Textures blend a hand-painted sensibility with PBR correctness, so the character keeps its illustrative warmth while still reacting properly to dynamic light in engine.",
-    ],
-    breakdown: [
-      "Stylized high-poly sculpt with exaggerated forms in ZBrush.",
-      "Retopology in 3D-Coat / Maya to a lean game budget.",
-      "Hand-painted-feel PBR texturing in Substance 3D Painter.",
-      "Material definition and trim detailing.",
-      "Presentation and turntables in Marmoset Toolbag.",
-    ],
-    stats: [
-      ["Tris", "64k"],
-      ["Textures", "2K PBR"],
-      ["Style", "Stylized-PBR"],
-      ["Target", "Real-time"],
-    ],
-  },
-  {
-    id: "atelier",
-    title: "Atelier",
-    client: "Studio Commission",
-    discipline: "Hard-Surface · Environment",
-    year: "2024",
-    c1: "#5aa8ff",
-    c2: "#1c2a3a",
-    tagline:
-      "A hero hard-surface prop set for an environment — precise mechanical modeling, trim-sheet efficiency, and grounded, weathered materials.",
-    role: "Hard-Surface · Materials · Lighting",
-    software: ["Maya", "Substance 3D Painter", "Substance 3D Designer", "Marmoset Toolbag", "Unreal Engine 5"],
-    brief: [
-      "Atelier is a hero prop set — the kind of mechanical objects a camera lingers on. Every panel line and fastener was modeled with intent so the forms read as engineered, not decorated.",
-      "Materials were built as reusable trim sheets and smart materials in Substance, then dressed with grime, oxidation and use so the set feels like it has a history the moment it appears in shot.",
-    ],
-    breakdown: [
-      "Precise hard-surface modeling and blockout in Maya.",
-      "Trim-sheet and tiling material authoring in Substance 3D Designer.",
-      "High-to-low bakes and unique detail texturing.",
-      "Weathering, grime and edge-wear passes.",
-      "Lighting and presentation in Marmoset + UE5.",
-    ],
-    stats: [
-      ["Approach", "Trim + unique"],
-      ["Textures", "4K PBR"],
-      ["Maps", "Full PBR set"],
-      ["Engine", "UE5 · Nanite"],
-    ],
-  },
-  {
-    id: "genesis",
-    title: "Genesis",
-    client: "VFX — NDA",
-    discipline: "Digital Double",
+    discipline: "Hard-Surface Sculpting",
     year: "2023",
-    c1: "#3ce6a4",
-    c2: "#173a30",
     tagline:
-      "A scan-based digital double — photogrammetry cleaned and rebuilt into a production-ready MetaHuman for film-grade close-ups.",
-    role: "Digital Double · Scan Processing · Look Dev",
-    software: ["Wrap", "ZBrush", "MetaHuman Creator", "Mari", "Maya", "Unreal Engine 5"],
+      "A hard-surface study — a mountaineering boot broken down into shells, buckles and soles, sculpted entirely in ZBrush.",
+    role: "Hard-Surface Sculpting",
+    software: ["ZBrush"],
     brief: [
-      "Genesis turns a raw photogrammetry scan into a dependable digital double. The scan data was cleaned, re-wrapped to a controllable topology, and reconciled with a MetaHuman rig so it could be posed and animated reliably.",
-      "Texture detail from the scan was preserved and extended in Mari, then look-developed for realistic skin response under film-grade lighting in Unreal Engine 5.",
+      "A hard-surface exercise built for clean, mechanical forms: precise panel breaks, believable buckles and clasps, and a sole that reads as engineered rubber.",
+      "Every component was sculpted to hold up in close-up, with crisp bevels and controlled detail across the shell, cuff and hardware.",
     ],
-    breakdown: [
-      "Photogrammetry cleanup and re-wrap in Wrap.",
-      "Detail recovery and pore-level sculpt in ZBrush.",
-      "MetaHuman rig reconciliation for pose and animation.",
-      "Scan-derived skin textures extended in Mari.",
-      "Film-grade skin look dev and lighting in Unreal Engine 5.",
+    pipeline: [
+      "Blockout of major shells and volumes in ZBrush.",
+      "Hard-surface detailing — panels, buckles, stitching.",
+      "Component breakdown (cuff, sole, hardware).",
+      "Turnaround presentation renders.",
     ],
-    stats: [
-      ["Source", "Photogrammetry"],
-      ["Rig", "MetaHuman"],
-      ["Skin", "8K scan-based"],
-      ["Engine", "UE5"],
+    gallery: [
+      "Full turnaround",
+      "Cuff &amp; shin components",
+      "Sole detail",
     ],
   },
+];
+
+// ------------------------ Studio credits (from CV) -----------------------
+
+const credits = [
+  {
+    studio: "Team From Earth",
+    role: "3D Character Artist",
+    period: "Jan 2026 — Present · Remote",
+    titles: [
+      ["Unannounced Project", "TBA", "Character modeling / texturing"],
+    ],
+  },
+  {
+    studio: "Airship Interactive",
+    role: "3D Character Artist",
+    period: "Mar 2024 — Dec 2024 · Remote",
+    titles: [
+      ["Unannounced AAA Project", "TBA", "Character modeling / texturing"],
+      ["Unannounced AAA Project", "TBA", "Blendshape modeling"],
+    ],
+  },
+  {
+    studio: "3Lateral / Epic Games",
+    role: "Technical Modeler",
+    period: "Jul 2019 — Oct 2023 · Novi Sad, Serbia",
+    titles: [
+      ["Death Stranding 2: On the Beach", "2025", "Scan matching · facial hair grooming"],
+      ["MindsEye", "2025", "Scan matching"],
+      ["Marvel's Spider-Man 2", "2023", "Scan matching"],
+      ["Bluedot", "2023", "Facial hair grooming"],
+      ["Death Stranding 2 (Cinematic)", "2022", "Facial hair grooming"],
+      ["Horizon II: Forbidden West — Burning Shores", "2022", "Texturing · scan matching"],
+      ["Horizon II: Forbidden West", "2022", "Texturing · scan matching"],
+      ["The Dark Pictures: The Devil in Me", "2022", "Scan matching"],
+      ["The Matrix Awakens", "2021", "Scan matching"],
+      ["The Dark Pictures: House of Ashes", "2021", "Scan matching"],
+      ["Senua's Saga: Hellblade II (Cinematic)", "2020", "4D data cleanup"],
+      ["MetaHuman Creator", "2020", "Scan matching · texturing"],
+      ["Marvel's Spider-Man: Miles Morales", "2020", "Scan matching"],
+    ],
+  },
+];
+
+const education = [
+  ["Henning Sanden — Creature Modeling Mentorship", "Jan–Mar 2025 · Online"],
+  ["Gael Kerchenbaum — Creature Texturing Mentorship", "Dec 2023 · Online"],
+  ["Univerzitet Metropolitan — BA Graphic Design", "2015–2020 · Niš (unfinished)"],
 ];
 
 // ------------------------------ Helpers ----------------------------------
@@ -209,171 +219,6 @@ function write(path, content) {
   mkdirSync(dirname(path), { recursive: true });
   writeFileSync(path, content, "utf8");
   console.log("wrote", path);
-}
-
-const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;");
-
-// ----------------------- Placeholder render art -------------------------
-// Cheap, self-contained SVGs that read like 3D render stills. Kinds:
-//   hero/beauty = rim-lit sculptural form, wire = wireframe sphere,
-//   clay = neutral matcap clay, texture = PBR channel breakdown.
-// The artist swaps these for real renders by replacing the files.
-
-const W = 1600, H = 900;
-
-function frameLabels(uid, title, kind, cyan = true) {
-  const tc = kind.toUpperCase();
-  return `
-  <g stroke="#f2f2f0" stroke-opacity="0.4" stroke-width="1.4">
-    <path d="M56 40 v26 M43 53 h26"/>
-    <path d="M${W - 56} 40 v26 M${W - 69} 53 h26"/>
-  </g>
-  <text x="56" y="${H - 96}" font-family="'Roboto Mono', monospace" font-size="20" letter-spacing="4" fill="#f2f2f0" opacity="0.65">${esc(title).toUpperCase()}</text>
-  <text x="56" y="${H - 54}" font-family="'Roboto Mono', monospace" font-size="30" letter-spacing="6" fill="${cyan ? "#2fe6e6" : "#f2f2f0"}">${tc}</text>
-  <text x="${W - 56}" y="${H - 54}" text-anchor="end" font-family="'Roboto Mono', monospace" font-size="20" letter-spacing="3" fill="#2fe6e6">● 4K</text>`;
-}
-
-function formDefs(uid, c1, c2) {
-  return `
-    <linearGradient id="bg${uid}" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="${c2}"/>
-      <stop offset="0.55" stop-color="#0c0d10"/>
-      <stop offset="1" stop-color="#050506"/>
-    </linearGradient>
-    <radialGradient id="rim${uid}" cx="40%" cy="32%" r="75%">
-      <stop offset="0" stop-color="#ffffff" stop-opacity="0.9"/>
-      <stop offset="0.18" stop-color="${c1}" stop-opacity="0.95"/>
-      <stop offset="0.55" stop-color="${c2}"/>
-      <stop offset="1" stop-color="#050506" stop-opacity="0.6"/>
-    </radialGradient>
-    <radialGradient id="glow${uid}" cx="50%" cy="50%" r="50%">
-      <stop offset="0" stop-color="${c1}" stop-opacity="0.7"/>
-      <stop offset="1" stop-color="${c1}" stop-opacity="0"/>
-    </radialGradient>
-    <radialGradient id="vig${uid}" cx="50%" cy="46%" r="80%">
-      <stop offset="0" stop-color="#000" stop-opacity="0"/>
-      <stop offset="0.78" stop-color="#000" stop-opacity="0.22"/>
-      <stop offset="1" stop-color="#000" stop-opacity="0.78"/>
-    </radialGradient>
-    <filter id="soft${uid}"><feGaussianBlur stdDeviation="22"/></filter>
-    <filter id="soft2${uid}"><feGaussianBlur stdDeviation="60"/></filter>`;
-}
-
-// A soft rim-lit sculptural bust-like form filling the frame, tinted per project.
-function formShape(uid, c1, c2) {
-  const cx = W * 0.5, cy = H * 0.52;
-  return `
-  <g filter="url(#soft2${uid})">
-    <ellipse cx="${cx - 260}" cy="${cy - 120}" rx="360" ry="300" fill="url(#glow${uid})"/>
-    <ellipse cx="${cx + 340}" cy="${cy + 160}" rx="420" ry="340" fill="url(#glow${uid})" opacity="0.7"/>
-  </g>
-  <g filter="url(#soft${uid})">
-    <ellipse cx="${cx}" cy="${cy}" rx="380" ry="430" fill="url(#rim${uid})"/>
-    <ellipse cx="${cx - 30}" cy="${cy + 340}" rx="300" ry="180" fill="url(#rim${uid})"/>
-    <ellipse cx="${cx + 150}" cy="${cy - 220}" rx="130" ry="150" fill="${c1}" opacity="0.4"/>
-  </g>
-  <ellipse cx="${cx - 120}" cy="${cy - 180}" rx="60" ry="80" fill="#ffffff" opacity="0.5" filter="url(#soft${uid})"/>`;
-}
-
-function svgHero(p, kind) {
-  const uid = (p.id + kind).replace(/[^a-z0-9]/gi, "");
-  const { c1, c2, title } = p;
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
-  <defs>${formDefs(uid, c1, c2)}</defs>
-  <rect width="${W}" height="${H}" fill="url(#bg${uid})"/>
-  ${formShape(uid, c1, c2)}
-  <rect width="${W}" height="${H}" fill="url(#vig${uid})"/>
-  ${frameLabels(uid, title, kind)}
-</svg>`;
-}
-
-function svgWire(p) {
-  const uid = (p.id + "wire").replace(/[^a-z0-9]/gi, "");
-  const { c1, title } = p;
-  const cx = W * 0.5, cy = H * 0.5, R = 300;
-  let lines = "";
-  // longitude arcs
-  for (let i = 0; i <= 10; i++) {
-    const t = i / 10;
-    const rx = Math.abs(Math.cos((t - 0.5) * Math.PI)) * R;
-    lines += `<ellipse cx="${cx}" cy="${cy}" rx="${rx.toFixed(1)}" ry="${R}" fill="none" stroke="${c1}" stroke-opacity="0.32" stroke-width="1.2"/>`;
-  }
-  // latitude lines
-  for (let i = 1; i < 10; i++) {
-    const t = i / 10;
-    const y = cy - R + t * 2 * R;
-    const rx = Math.sqrt(Math.max(0, 1 - Math.pow((y - cy) / R, 2))) * R;
-    lines += `<ellipse cx="${cx}" cy="${y}" rx="${rx.toFixed(1)}" ry="${(rx * 0.28).toFixed(1)}" fill="none" stroke="${c1}" stroke-opacity="0.24" stroke-width="1.2"/>`;
-  }
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
-  <defs><radialGradient id="v${uid}" cx="50%" cy="45%" r="75%"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity="0.9"/></radialGradient></defs>
-  <rect width="${W}" height="${H}" fill="#0a0c0d"/>
-  <circle cx="${cx}" cy="${cy}" r="${R}" fill="${c1}" opacity="0.05"/>
-  ${lines}
-  <rect width="${W}" height="${H}" fill="url(#v${uid})"/>
-  ${frameLabels(uid, title, "wireframe")}
-</svg>`;
-}
-
-function svgClay(p) {
-  const uid = (p.id + "clay").replace(/[^a-z0-9]/gi, "");
-  const { title } = p;
-  const cx = W * 0.5, cy = H * 0.54;
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
-  <defs>
-    <radialGradient id="clay${uid}" cx="40%" cy="32%" r="75%">
-      <stop offset="0" stop-color="#d8d8d4"/><stop offset="0.5" stop-color="#8a8a86"/><stop offset="1" stop-color="#2a2a2c"/>
-    </radialGradient>
-    <filter id="cs${uid}"><feGaussianBlur stdDeviation="20"/></filter>
-    <radialGradient id="cv${uid}" cx="50%" cy="45%" r="75%"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity="0.88"/></radialGradient>
-  </defs>
-  <rect width="${W}" height="${H}" fill="#141416"/>
-  <ellipse cx="${cx}" cy="${cy + 360}" rx="300" ry="46" fill="#000" opacity="0.5" filter="url(#cs${uid})"/>
-  <g filter="url(#cs${uid})">
-    <ellipse cx="${cx}" cy="${cy}" rx="320" ry="370" fill="url(#clay${uid})"/>
-    <ellipse cx="${cx}" cy="${cy + 290}" rx="250" ry="140" fill="url(#clay${uid})"/>
-  </g>
-  <rect width="${W}" height="${H}" fill="url(#cv${uid})"/>
-  ${frameLabels(uid, title, "clay / ao")}
-</svg>`;
-}
-
-function svgTexture(p) {
-  const uid = (p.id + "tex").replace(/[^a-z0-9]/gi, "");
-  const { c1, title } = p;
-  const cols = 16, rows = 9, s = 100;
-  let checker = "";
-  for (let y = 0; y < rows; y++)
-    for (let x = 0; x < cols; x++)
-      if ((x + y) % 2 === 0)
-        checker += `<rect x="${x * s}" y="${y * s}" width="${s}" height="${s}" fill="#ffffff" opacity="0.04"/>`;
-  const chans = ["ALBEDO", "NORMAL", "ROUGH", "METAL"];
-  let swatches = "";
-  chans.forEach((c, i) => {
-    const bx = 60 + i * 250;
-    const by = H - 300;
-    const fills = [c1, "#8a9bd8", "#9a9a96", "#c9b98a"];
-    swatches += `<rect x="${bx}" y="${by}" width="200" height="130" fill="${fills[i]}" opacity="0.5" rx="4"/>
-      <text x="${bx}" y="${by + 158}" font-family="'Roboto Mono', monospace" font-size="16" letter-spacing="2" fill="#f2f2f0" opacity="0.7">${c}</text>`;
-  });
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
-  <rect width="${W}" height="${H}" fill="#0d0d0f"/>
-  ${checker}
-  <g stroke="${c1}" stroke-opacity="0.18" stroke-width="1">
-    ${Array.from({ length: cols + 1 }, (_, i) => `<path d="M${i * s} 0V${H}"/>`).join("")}
-    ${Array.from({ length: rows + 1 }, (_, i) => `<path d="M0 ${i * s}H${W}"/>`).join("")}
-  </g>
-  ${swatches}
-  ${frameLabels(uid, title, "pbr / 4k")}
-</svg>`;
-}
-
-function buildAssets(p) {
-  write(`assets/${p.id}-cover.svg`, svgHero(p, "beauty"));
-  write(`assets/${p.id}-beauty.svg`, svgHero(p, "beauty · 02"));
-  write(`assets/${p.id}-wire.svg`, svgWire(p));
-  write(`assets/${p.id}-clay.svg`, svgClay(p));
-  write(`assets/${p.id}-texture.svg`, svgTexture(p));
 }
 
 // -------------------------- Shared fragments -----------------------------
@@ -398,7 +243,6 @@ function head(title, desc) {
 <body>`;
 }
 
-// The head-silhouette style logo mark (references Blur's head logo idea).
 function logoMark() {
   return `<svg class="logo-head" viewBox="0 0 40 40" width="30" height="30" aria-hidden="true"><path d="M8 34c0-9 3-14 9-16 3-1 4-3 4-6 0-4 3-7 7-6 5 1 8 6 8 12 0 12-7 22-19 22H8z" fill="currentColor"/></svg>`;
 }
@@ -419,13 +263,14 @@ function nav(root) {
       <nav class="menu-links">
         <a href="${root}index.html"><span class="mi">01</span> Home</a>
         <a href="${root}index.html#work"><span class="mi">02</span> Work</a>
-        <a href="${root}index.html#about"><span class="mi">03</span> About</a>
-        <a href="${root}index.html#contact"><span class="mi">04</span> Contact</a>
+        <a href="${root}studio-work.html"><span class="mi">03</span> Studio Credits</a>
+        <a href="${root}index.html#about"><span class="mi">04</span> About</a>
+        <a href="${root}index.html#contact"><span class="mi">05</span> Contact</a>
       </nav>
       <div class="menu-foot">
         <a href="mailto:${SITE.email}">${SITE.email}</a>
         <a href="${SITE.artstation}" target="_blank" rel="noopener">ArtStation ↗</a>
-        <a href="${SITE.github}" target="_blank" rel="noopener">GitHub ↗</a>
+        <a href="${SITE.linkedin}" target="_blank" rel="noopener">LinkedIn ↗</a>
       </div>
     </div>
   </div>`;
@@ -441,8 +286,8 @@ function footer(root) {
     <div class="foot-links">
       <a href="mailto:${SITE.email}">Email</a>
       <a href="${SITE.artstation}" target="_blank" rel="noopener">ArtStation</a>
-      <a href="${SITE.github}" target="_blank" rel="noopener">GitHub</a>
-      <a href="${root}index.html#work">Work</a>
+      <a href="${SITE.linkedin}" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="${root}studio-work.html">Credits</a>
     </div>
   </footer>
   <script src="${root}script.js"></script>
@@ -455,29 +300,57 @@ function footer(root) {
 function panel(p, idx) {
   const num = String(idx + 1).padStart(2, "0");
   return `      <a class="panel" href="projects/${p.id}.html" data-parallax>
-        <div class="panel-media"><img src="assets/${p.id}-cover.svg" alt="${esc(p.title)} — ${esc(p.discipline)}" loading="lazy"/></div>
+        <div class="panel-media"><img src="assets/${p.id}-cover.jpg" alt="${p.title} — ${p.discipline}" loading="lazy"/></div>
         <div class="panel-shade"></div>
         <div class="panel-content">
-          <div class="panel-tag"><span class="idx">${num}</span> ${esc(p.discipline)}</div>
-          <h2 class="panel-title">${esc(p.title)}</h2>
-          <div class="panel-meta">${esc(p.client)} — ${p.year}</div>
+          <div class="panel-tag"><span class="idx">${num}</span> ${p.discipline}</div>
+          <h2 class="panel-title">${p.title}</h2>
+          <div class="panel-meta">${p.client} — ${p.year}</div>
         </div>
         <span class="panel-view">View project ↗</span>
       </a>`;
 }
 
+function creditTeaser() {
+  // Flat list of shipped titles for the homepage teaser (studio work).
+  const shipped = credits
+    .flatMap((c) => c.titles.map((t) => ({ ...{ title: t[0], year: t[1] }, studio: c.studio })))
+    .filter((t) => t.year !== "TBA");
+  const rows = shipped
+    .map(
+      (t) =>
+        `        <a class="credit-row" href="studio-work.html"><span class="cr-title">${t.title}</span><span class="cr-studio">${t.studio}</span><span class="cr-year">${t.year}</span></a>`
+    )
+    .join("\n");
+  return `    <section id="studio" class="studio-teaser">
+      <div class="studio-inner">
+        <div class="studio-head">
+          <div>
+            <span class="sec-label">Studio Credits</span>
+            <p class="studio-lead">Shipped titles from six years as a technical modeler &amp; character artist at <em>3Lateral / Epic Games</em> and <em>Airship Interactive</em>.</p>
+          </div>
+          <a class="studio-all" href="studio-work.html">All credits ↗</a>
+        </div>
+        <div class="credit-list">
+${rows}
+        </div>
+      </div>
+    </section>`;
+}
+
 function homePage() {
   const panels = projects.map(panel).join("\n");
+  const skills = SKILLS.map((s) => `<span class="chip">${s}</span>`).join("\n            ");
   return `${head(
     `${SITE.name} — ${SITE.role}`,
-    `${SITE.name}, ${SITE.role}. ${SITE.disciplines}. Selected 3D character art, texturing and MetaHuman work.`
+    `${SITE.name}, ${SITE.role} based in ${SITE.location}. Character art, creature sculpting and texturing, with AAA credits including Death Stranding 2, Spider-Man 2 and Horizon Forbidden West.`
   ).replace(/{{root}}/g, "./")}
 ${nav("./")}
   <main>
     <section class="hero-panel">
       <div class="hero-grid"></div>
       <div class="hero-content">
-        <div class="hero-tag">Showreel — 2025</div>
+        <div class="hero-tag">Portfolio — 2025</div>
         <h1>${SITE.name.split(" ")[0]}<br/>${SITE.name.split(" ")[1]}</h1>
         <div class="hero-role">${SITE.role}</div>
         <div class="hero-sub">${SITE.disciplines}</div>
@@ -496,37 +369,23 @@ ${panels}
     <section id="about" class="about">
       <div class="about-inner">
         <span class="sec-label">About</span>
-        <p class="about-lead">I build <em>believable</em> characters and surfaces — from a first ZBrush sculpt to a real-time <em>MetaHuman</em> that holds up in close-up.</p>
+        <p class="about-lead">I sculpt and texture <em>believable</em> characters and creatures — from AAA production heads to personal creature studies.</p>
         <div class="about-cols">
           <div class="about-body">
-            <p>I'm ${SITE.name}, a ${SITE.role.toLowerCase()} focused on high-fidelity character art, PBR texturing and digital humans. I work across the full asset pipeline — sculpt, retopology, UVs, bakes, look development and real-time integration.</p>
-            <p>My toolset centers on ZBrush, Substance 3D, Maya, Marvelous Designer, Mari, MetaHuman Creator, Marmoset Toolbag and Unreal Engine 5. I care most about the details that make a surface feel real: how light enters skin, how an edge wears, how a material remembers its history.</p>
+            <p>I'm ${SITE.name}, a ${SITE.role.toLowerCase()} based in ${SITE.location}. I spent six years as a technical modeler at <strong>3Lateral / Epic Games</strong> — scan matching, texturing and grooming on titles like Death Stranding 2, Marvel's Spider-Man 2, Horizon Forbidden West and MetaHuman Creator — and now focus on character and creature art.</p>
+            <p>I've studied creature modeling and texturing under Henning Sanden and Gael Kerchenbaum, and work across the full asset pipeline: sculpt, retopology, UVs, and PBR texturing.</p>
           </div>
           <div class="about-side">
-            <div class="ab-block">
-              <h4>Disciplines</h4>
-              <ul>
-                <li>Character &amp; Creature Art</li>
-                <li>Digital Humans / MetaHuman</li>
-                <li>PBR &amp; Hand-Painted Texturing</li>
-                <li>Hard-Surface Modeling</li>
-                <li>Look Development &amp; Lighting</li>
-              </ul>
-            </div>
-            <div class="ab-block">
-              <h4>Software</h4>
-              <ul>
-                <li>ZBrush · Maya · Blender</li>
-                <li>Substance 3D Painter / Designer · Mari</li>
-                <li>Marvelous Designer · XGen</li>
-                <li>MetaHuman Creator · Wrap</li>
-                <li>Marmoset Toolbag · Unreal Engine 5</li>
-              </ul>
+            <h4>Software</h4>
+            <div class="chips">
+            ${skills}
             </div>
           </div>
         </div>
       </div>
     </section>
+
+${creditTeaser()}
 
     <section id="contact" class="contact">
       <span class="sec-label">Contact</span>
@@ -534,8 +393,8 @@ ${panels}
       <a class="contact-mail" href="mailto:${SITE.email}">${SITE.email} ↗</a>
       <div class="contact-links">
         <a href="${SITE.artstation}" target="_blank" rel="noopener">ArtStation</a>
-        <a href="${SITE.github}" target="_blank" rel="noopener">GitHub</a>
-        <a href="#work">Work</a>
+        <a href="${SITE.linkedin}" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="studio-work.html">Studio Credits</a>
       </div>
     </section>
   </main>
@@ -552,24 +411,16 @@ function projectPage(p, idx) {
     ["Role", p.role],
     ["Year", p.year],
   ]
-    .map((m) => `          <div class="meta-item"><div class="k">${m[0]}</div><div class="v">${esc(m[1])}</div></div>`)
+    .map((m) => `          <div class="meta-item"><div class="k">${m[0]}</div><div class="v">${m[1]}</div></div>`)
     .join("\n");
-  const breakdown = p.breakdown.map((b) => `              <li>${esc(b)}</li>`).join("\n");
-  const stats = p.stats
-    .map((s) => `          <div class="stat"><div class="n">${esc(s[1])}</div><div class="l">${esc(s[0])}</div></div>`)
-    .join("\n");
-  const software = p.software.map((s) => `<span class="chip">${esc(s)}</span>`).join("\n            ");
-  const gallery = [
-    ["beauty", "Beauty render"],
-    ["wire", "Wireframe / topology"],
-    ["clay", "Clay / ambient occlusion"],
-    ["texture", "PBR texture breakdown"],
-  ]
+  const pipeline = p.pipeline.map((b) => `              <li>${b}</li>`).join("\n");
+  const software = p.software.map((s) => `<span class="chip">${s}</span>`).join("\n            ");
+  const gallery = p.gallery
     .map(
-      (g, i) =>
+      (cap, i) =>
         `        <figure class="reveal">
-          <img src="../assets/${p.id}-${g[0]}.svg" alt="${esc(p.title)} — ${g[1]}" loading="lazy"/>
-          <figcaption><span class="idx">0${i + 1}</span>${g[1]}</figcaption>
+          <img src="../assets/${p.id}-${i + 1}.jpg" alt="${p.title} — ${cap.replace(/&amp;/g, "and")}" loading="lazy"/>
+          <figcaption><span class="idx">0${i + 1}</span>${cap}</figcaption>
         </figure>`
     )
     .join("\n");
@@ -578,12 +429,12 @@ function projectPage(p, idx) {
 ${nav("../")}
   <main>
     <section class="proj-hero">
-      <div class="proj-cover"><img src="../assets/${p.id}-cover.svg" alt="${esc(p.title)}"/></div>
+      <div class="proj-cover"><img src="../assets/${p.id}-cover.jpg" alt="${p.title}"/></div>
       <div class="proj-hero-in">
         <a class="back" href="../index.html#work">← Index</a>
-        <div class="proj-tag"><span class="idx">${String(idx + 1).padStart(2, "0")}</span> ${esc(p.discipline)}</div>
-        <h1>${esc(p.title)}</h1>
-        <div class="proj-client">${esc(p.client)} — ${p.year}</div>
+        <div class="proj-tag"><span class="idx">${String(idx + 1).padStart(2, "0")}</span> ${p.discipline}</div>
+        <h1>${p.title}</h1>
+        <div class="proj-client">${p.client} — ${p.year}</div>
       </div>
       <div class="hero-scroll"><span>Scroll</span><span class="line"></span></div>
     </section>
@@ -593,12 +444,12 @@ ${meta}
     </section>
 
     <section class="proj-intro">
-      <p class="tagline">${esc(p.tagline)}</p>
+      <p class="tagline">${p.tagline}</p>
       <div class="prose">
-        ${p.brief.map((b) => `<p>${esc(b)}</p>`).join("\n        ")}
+        ${p.brief.map((b) => `<p>${b}</p>`).join("\n        ")}
         <h3>Pipeline</h3>
         <ul>
-${breakdown}
+${pipeline}
         </ul>
         <h3>Software</h3>
         <div class="chips">
@@ -607,28 +458,81 @@ ${breakdown}
       </div>
     </section>
 
-    <section class="stat-strip">
-${stats}
-    </section>
-
     <section class="gallery">
 ${gallery}
     </section>
 
     <a class="next-proj" href="${next.id}.html">
       <span class="np-label">Next Project ↗</span>
-      <span class="np-title">${esc(next.title)}</span>
-      <span class="np-disc">${esc(next.discipline)}</span>
+      <span class="np-title">${next.title}</span>
+      <span class="np-disc">${next.discipline}</span>
     </a>
   </main>
 ${footer("../")}`;
 }
 
+// --------------------------- Studio credits page -------------------------
+
+function studioPage() {
+  const groups = credits
+    .map((c) => {
+      const rows = c.titles
+        .map(
+          (t) =>
+            `          <div class="cw-row"><span class="cw-title">${t[0]}</span><span class="cw-work">${t[2]}</span><span class="cw-year">${t[1]}</span></div>`
+        )
+        .join("\n");
+      return `      <div class="cw-group">
+        <div class="cw-studio">
+          <h3>${c.studio}</h3>
+          <div class="cw-role">${c.role}</div>
+          <div class="cw-period">${c.period}</div>
+        </div>
+        <div class="cw-list">
+${rows}
+        </div>
+      </div>`;
+    })
+    .join("\n");
+  const edu = education
+    .map((e) => `        <div class="cw-row"><span class="cw-title">${e[0]}</span><span class="cw-year">${e[1]}</span></div>`)
+    .join("\n");
+  return `${head(`Studio Credits — ${SITE.name}`, `Shipped game and film credits by ${SITE.name}, technical modeler and character artist.`).replace(/{{root}}/g, "./")}
+${nav("./")}
+  <main>
+    <section class="cw-hero">
+      <a class="back" href="index.html#studio">← Index</a>
+      <span class="sec-label">Studio Credits</span>
+      <h1>Shipped<br/>Work</h1>
+      <p class="cw-intro">Six years of production credits — scan matching, texturing, grooming and character work across AAA games and cinematics.</p>
+    </section>
+
+    <section class="cw-body">
+${groups}
+
+      <div class="cw-group">
+        <div class="cw-studio">
+          <h3>Education</h3>
+          <div class="cw-role">Mentorships &amp; degree</div>
+        </div>
+        <div class="cw-list">
+${edu}
+        </div>
+      </div>
+    </section>
+
+    <a class="next-proj" href="index.html#work">
+      <span class="np-label">Back to work ↗</span>
+      <span class="np-title">Portfolio</span>
+      <span class="np-disc">${SITE.disciplines}</span>
+    </a>
+  </main>
+${footer("./")}`;
+}
+
 // ------------------------------- Emit ------------------------------------
 
 write("index.html", homePage());
-projects.forEach((p, idx) => {
-  write(`projects/${p.id}.html`, projectPage(p, idx));
-  buildAssets(p);
-});
-console.log("\nDone —", SITE.name, "·", projects.length, "projects");
+write("studio-work.html", studioPage());
+projects.forEach((p, idx) => write(`projects/${p.id}.html`, projectPage(p, idx)));
+console.log("\nDone —", SITE.name, "·", projects.length, "projects + studio credits");
