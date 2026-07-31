@@ -311,17 +311,46 @@ function panel(p, idx) {
       </a>`;
 }
 
-function creditTeaser() {
-  // Flat list of shipped titles for the homepage teaser (studio work).
-  const shipped = credits
-    .flatMap((c) => c.titles.map((t) => ({ ...{ title: t[0], year: t[1] }, studio: c.studio })))
-    .filter((t) => t.year !== "TBA");
-  const rows = shipped
-    .map(
-      (t) =>
-        `        <a class="credit-row" href="studio-work.html"><span class="cr-title">${t.title}</span><span class="cr-studio">${t.studio}</span><span class="cr-year">${t.year}</span></a>`
-    )
+// Full grouped credits (studio + role + period + titles, then Education).
+// Shared by the homepage section and the standalone studio-work page.
+function creditGroups() {
+  const groups = credits
+    .map((c) => {
+      const rows = c.titles
+        .map(
+          (t) =>
+            `          <div class="cw-row"><span class="cw-title">${t[0]}</span><span class="cw-work">${t[2]}</span><span class="cw-year">${t[1]}</span></div>`
+        )
+        .join("\n");
+      return `      <div class="cw-group">
+        <div class="cw-studio">
+          <h3>${c.studio}</h3>
+          <div class="cw-role">${c.role}</div>
+          <div class="cw-period">${c.period}</div>
+        </div>
+        <div class="cw-list">
+${rows}
+        </div>
+      </div>`;
+    })
     .join("\n");
+  const edu = education
+    .map((e) => `          <div class="cw-row"><span class="cw-title">${e[0]}</span><span class="cw-year">${e[1]}</span></div>`)
+    .join("\n");
+  return `${groups}
+
+      <div class="cw-group">
+        <div class="cw-studio">
+          <h3>Education</h3>
+          <div class="cw-role">Mentorships &amp; degree</div>
+        </div>
+        <div class="cw-list">
+${edu}
+        </div>
+      </div>`;
+}
+
+function creditTeaser() {
   return `    <section id="studio" class="studio-teaser">
       <div class="studio-inner">
         <div class="studio-head">
@@ -329,11 +358,9 @@ function creditTeaser() {
             <span class="sec-label">Studio Credits</span>
             <p class="studio-lead">Shipped titles from six years as a technical modeler &amp; character artist at <em>3Lateral / Epic Games</em> and <em>Airship Interactive</em>.</p>
           </div>
-          <a class="studio-all" href="studio-work.html">All credits ↗</a>
+          <a class="studio-all" href="studio-work.html">Full page ↗</a>
         </div>
-        <div class="credit-list">
-${rows}
-        </div>
+${creditGroups()}
       </div>
     </section>`;
 }
@@ -473,29 +500,6 @@ ${footer("../")}`;
 // --------------------------- Studio credits page -------------------------
 
 function studioPage() {
-  const groups = credits
-    .map((c) => {
-      const rows = c.titles
-        .map(
-          (t) =>
-            `          <div class="cw-row"><span class="cw-title">${t[0]}</span><span class="cw-work">${t[2]}</span><span class="cw-year">${t[1]}</span></div>`
-        )
-        .join("\n");
-      return `      <div class="cw-group">
-        <div class="cw-studio">
-          <h3>${c.studio}</h3>
-          <div class="cw-role">${c.role}</div>
-          <div class="cw-period">${c.period}</div>
-        </div>
-        <div class="cw-list">
-${rows}
-        </div>
-      </div>`;
-    })
-    .join("\n");
-  const edu = education
-    .map((e) => `        <div class="cw-row"><span class="cw-title">${e[0]}</span><span class="cw-year">${e[1]}</span></div>`)
-    .join("\n");
   return `${head(`Studio Credits — ${SITE.name}`, `Shipped game and film credits by ${SITE.name}, technical modeler and character artist.`).replace(/{{root}}/g, "./")}
 ${nav("./")}
   <main>
@@ -507,17 +511,7 @@ ${nav("./")}
     </section>
 
     <section class="cw-body">
-${groups}
-
-      <div class="cw-group">
-        <div class="cw-studio">
-          <h3>Education</h3>
-          <div class="cw-role">Mentorships &amp; degree</div>
-        </div>
-        <div class="cw-list">
-${edu}
-        </div>
-      </div>
+${creditGroups()}
     </section>
 
     <a class="next-proj" href="index.html#work">
