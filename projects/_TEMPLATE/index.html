@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<!-- ═══════════════════════════════════════════════════════════════════════
+     PROJECT TEMPLATE  —  copy this whole "_TEMPLATE" folder to make a new
+     project, then edit the parts marked  <!-- EDIT --> below.
+
+     • Put your pictures in the "images" folder next to this file:
+         images/cover.jpg   → big picture at the top + the home-page tile
+         images/01.jpg      → first gallery picture
+         images/02.jpg      → second gallery picture   (add 03, 04… as needed)
+     • Keep the file names lowercase with dashes, no spaces.
+     • Don't touch the <head> tags except the ones marked EDIT.
+     • After editing, don't forget to add a matching CARD on the home page
+       (open ../../index.html and follow the note near the top of the cards).
+════════════════════════════════════════════════════════════════════════ -->
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <!-- EDIT: the browser-tab title -->
+  <title>PROJECT TITLE — Rastko Blagojevic</title>
+  <!-- EDIT: one-sentence description (used by Google + social links) -->
+  <meta name="description" content="SHORT DESCRIPTION OF THE PROJECT."/>
+  <meta property="og:title" content="PROJECT TITLE — Rastko Blagojevic"/>
+  <meta property="og:description" content="SHORT DESCRIPTION OF THE PROJECT."/>
+  <meta property="og:type" content="website"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;600&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23070708'/%3E%3Cg stroke='%232fe6e6' stroke-width='2'%3E%3Cpath d='M16 6v20M6 16h20'/%3E%3C/g%3E%3C/svg%3E"/>
+  <link rel="stylesheet" href="../../styles.css"/>
+</head>
+<body>
+  <div class="scroll-progress"><span></span></div>
+  <span class="crosshair tl"></span>
+  <span class="crosshair br"></span>
+  <header class="nav">
+    <button class="menu-btn" aria-label="Menu"><span class="plus">+</span></button>
+    <a class="brand" href="../../index.html">
+      <span class="brand-name">Rastko&nbsp;Blagojevic</span>
+      <svg class="logo-head" viewBox="0 0 40 40" width="30" height="30" aria-hidden="true"><path d="M8 34c0-9 3-14 9-16 3-1 4-3 4-6 0-4 3-7 7-6 5 1 8 6 8 12 0 12-7 22-19 22H8z" fill="currentColor"/></svg>
+    </a>
+  </header>
+  <div class="menu-overlay" hidden>
+    <div class="menu-inner">
+      <nav class="menu-links">
+        <a href="../../index.html"><span class="mi">01</span> Home</a>
+        <a href="../../index.html#work"><span class="mi">02</span> Work</a>
+        <a href="../../studio-work.html"><span class="mi">03</span> Studio Credits</a>
+        <a href="../../index.html#about"><span class="mi">04</span> About</a>
+        <a href="../../index.html#contact"><span class="mi">05</span> Contact</a>
+      </nav>
+      <div class="menu-foot">
+        <a href="mailto:rastko.blagojevic.1@gmail.com">rastko.blagojevic.1@gmail.com</a>
+        <a href="https://www.artstation.com/mokosha" target="_blank" rel="noopener">ArtStation ↗</a>
+        <a href="https://www.linkedin.com/in/rastko-blagojevic-6b654020b/" target="_blank" rel="noopener">LinkedIn ↗</a>
+      </div>
+    </div>
+  </div>
+  <main>
+    <section class="proj-hero">
+      <div class="proj-cover"><img src="images/cover.jpg" alt="PROJECT TITLE"/></div>
+      <div class="proj-hero-in">
+        <a class="back" href="../../index.html#work">← Index</a>
+        <!-- EDIT: small label (client or "Personal") + the title + the year -->
+        <div class="proj-tag"><span class="idx">00</span> LABEL</div>
+        <h1>PROJECT TITLE</h1>
+        <div class="proj-client">YEAR</div>
+      </div>
+      <div class="hero-scroll"><span>Scroll</span><span class="line"></span></div>
+    </section>
+
+    <!-- EDIT: the three facts below (Client / Role / Year) -->
+    <section class="proj-meta">
+          <div class="meta-item"><div class="k">Client</div><div class="v">Personal</div></div>
+          <div class="meta-item"><div class="k">Role</div><div class="v">YOUR ROLE</div></div>
+          <div class="meta-item"><div class="k">Year</div><div class="v">YEAR</div></div>
+    </section>
+
+    <section class="proj-intro">
+      <!-- EDIT: one punchy sentence -->
+      <p class="tagline">ONE-LINE SUMMARY OF THE PROJECT.</p>
+      <div class="prose">
+        <!-- EDIT: a paragraph or two describing the work -->
+        <p>First paragraph — what the project is and what you were going for.</p>
+        <p>Second paragraph — how you approached it / what makes it interesting.</p>
+        <h3>Pipeline</h3>
+        <!-- EDIT: your steps (add or remove <li> lines) -->
+        <ul>
+              <li>Step one.</li>
+              <li>Step two.</li>
+              <li>Step three.</li>
+        </ul>
+        <h3>Software</h3>
+        <!-- EDIT: the tools you used (add or remove <span class="chip"> lines) -->
+        <div class="chips">
+            <span class="chip">ZBrush</span>
+            <span class="chip">Substance Painter</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- EDIT: your gallery. One <figure> per image.
+         To add more, copy a <figure>…</figure> block, bump the image name
+         (03.jpg, 04.jpg…) and the number in <span class="idx">. -->
+    <section class="gallery">
+        <figure class="reveal">
+          <img src="images/01.jpg" alt="PROJECT TITLE — caption" loading="lazy"/>
+          <figcaption><span class="idx">01</span>Caption for the first image</figcaption>
+        </figure>
+        <figure class="reveal">
+          <img src="images/02.jpg" alt="PROJECT TITLE — caption" loading="lazy"/>
+          <figcaption><span class="idx">02</span>Caption for the second image</figcaption>
+        </figure>
+    </section>
+
+    <a class="next-proj" href="../../index.html#work">
+      <span class="np-label">← Back to all work</span>
+      <span class="np-title">See more projects</span>
+      <span class="np-disc">Rastko Blagojevic — 3D Character &amp; Texture Artist</span>
+    </a>
+  </main>
+  <footer class="footer">
+    <div class="foot-row">
+      <span>© <span data-year>2025</span> Rastko Blagojevic</span>
+      <span>3D Character & Texture Artist</span>
+      <span>Novi Sad, Serbia</span>
+    </div>
+    <div class="foot-links">
+      <a href="mailto:rastko.blagojevic.1@gmail.com">Email</a>
+      <a href="https://www.artstation.com/mokosha" target="_blank" rel="noopener">ArtStation</a>
+      <a href="https://www.linkedin.com/in/rastko-blagojevic-6b654020b/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="../../studio-work.html">Credits</a>
+    </div>
+  </footer>
+  <script src="../../script.js"></script>
+</body>
+</html>

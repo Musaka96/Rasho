@@ -5,48 +5,37 @@ cinematic layout and mood modelled on [blur.com](https://www.blur.com/)
 (Blur Studio): full-bleed project panels, near-monochrome with a cyan accent,
 thin wide-tracked titles, a crosshair + head logo, and a scroll-progress bar.
 
-Pure static HTML/CSS/JS — no build step, no framework — so it deploys instantly
-on Vercel and is trivial to edit.
+Pure static HTML/CSS/JS — **no build step, no framework, no tools**. You edit
+the files directly and swap images; Vercel serves them as-is.
+
+## Editing
+
+See **[HOW-TO-EDIT.md](HOW-TO-EDIT.md)** — adding a project is: copy a folder,
+swap the images, edit the text, paste one card on the home page.
 
 ## Structure
 
 ```
-index.html                 Home: full-viewport hero + full-bleed project panels + about + contact
-projects/<slug>.html       One page per project (hero + pipeline + PBR gallery)
-assets/<slug>-cover.svg    Beauty render used on the home panel + project hero
-assets/<slug>-beauty.svg   Beauty render still
-assets/<slug>-wire.svg     Wireframe / topology still
-assets/<slug>-clay.svg     Clay / ambient-occlusion still
-assets/<slug>-texture.svg  PBR texture-channel breakdown
-styles.css                 Design system (colors, layout, components)
-script.js                  Menu, scroll-progress bar, panel parallax, reveals
-generate.mjs               Source-of-truth generator (see below)
-vercel.json                Static hosting + asset caching config
+index.html                       Home: hero + project cards + studio credits + about + contact
+studio-work.html                 Full studio-credits page
+projects/
+  _TEMPLATE/                     Blank project — copy this to make a new one
+    index.html                   The project page (text to edit)
+    images/                      cover.jpg (tile + hero) + 01.jpg, 02.jpg… (gallery)
+  <project-name>/                One self-contained folder per project (same shape)
+    index.html
+    images/
+styles.css                       Design system (colors, layout, components)
+script.js                        Menu, scroll-progress bar, panel parallax, reveals
+vercel.json                      Static hosting + image caching config
 ```
 
-The SVGs are **placeholder render stills**. Replace them with your real renders
-(keep the same file names, or point the `<img src>` in the HTML at new files)
-to make the site yours.
-
-## Editing content
-
-All project content lives in one place: the `projects` array at the top of
-[`generate.mjs`](generate.mjs) — title, client, discipline, year, brief,
-pipeline steps, stats and software. Edit that data and regenerate:
-
-```bash
-node generate.mjs
-```
-
-This rewrites `index.html`, every page in `projects/`, and the SVG art in
-`assets/`. Commit the regenerated files.
-
-Also update the placeholder contact details in the `SITE` object at the top of
-`generate.mjs` (email, ArtStation URL) before going live.
+Each project is fully self-contained in its own folder, so you can copy a
+folder to duplicate a project and swap its images independently.
 
 ## Deploying on Vercel
 
-1. Push this repo to GitHub (already wired to `Musaka96/Rasho`).
+1. Push this repo to GitHub (`Musaka96/Rasho`).
 2. In Vercel: **Add New → Project → Import** the `Rasho` repository.
 3. Framework preset: **Other**. Build command: *(leave empty)*.
    Output directory: `.` (the repository root).
@@ -56,9 +45,5 @@ No environment variables or build step are required.
 
 ## Local preview
 
-Any static server works, e.g.:
-
-```bash
-npx serve .
-# then open the printed http://localhost:… URL
-```
+Just **double-click `index.html`** to open it in your browser — everything is
+plain HTML with relative image paths, so it works straight from disk.
